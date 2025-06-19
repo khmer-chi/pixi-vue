@@ -1,0 +1,48 @@
+{
+  "name": "@khmer-chi/pixi-vue",
+  "version": "0.0.0-development",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 4444",
+    "build": "vue-tsc -b && vite build"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "module": "./dist/pixi-vue.js",
+  "types": "./dist/pixi-vue.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/pixi-vue.js"
+    }
+  },
+  "imports": {
+    "#*": "./src/*.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.1",
+  "dependencies": {
+    "pixi.js": "8.9.2",
+    "typescript": "^5.8.3",
+    "vue": "^3.5.17"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.0",
+    "@types/node": "^24.0.3",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "vite": "^6.3.5",
+    "vite-plugin-dts": "^4.5.4",
+    "vue-tsc": "^2.2.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khmer-chi/pixi-vue.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
