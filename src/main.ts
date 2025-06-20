@@ -1,4 +1,4 @@
-import App from "#/App.vue";
 import { createPixiApp } from "#/createPixiApp";
+import Demo from "#/Demo.vue";
 
-createPixiApp(App, document.getElementById("root")!);
+createPixiApp(Demo, document.getElementById("app")!);

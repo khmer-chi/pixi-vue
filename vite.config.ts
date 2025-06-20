@@ -2,6 +2,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import vue from "@vitejs/plugin-vue";
 import dts from "vite-plugin-dts";
+import { isPixiVueElement } from "./src/isPixiVueElement";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export default {
@@ -9,7 +10,7 @@ export default {
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: (tag) => tag.startsWith("pixi-"),
+          isCustomElement: isPixiVueElement,
         },
       },
     }),
@@ -19,14 +20,16 @@ export default {
   ],
   build: {
     lib: {
-      entry: resolve(__dirname, "src/entry.tsx"),
+      entry: resolve(__dirname, "src/entry.ts"),
       name: "PixiVue",
       fileName: "pixi-vue",
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["vue"],
+      external: ["vue", "@vitejs/plugin-vue"],
     },
+    sourcemap: true, // 生成 source map
+    chunkSizeWarningLimit: 1000,
   },
   resolve: {
     alias: {
