@@ -1,3 +1,3 @@
-import { createPixiApp } from "#createPixiApp";
+import { createPixiApp } from "#/createPixiApp";
 
 export { createPixiApp };

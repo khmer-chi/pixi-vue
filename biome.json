@@ -6,7 +6,8 @@
     "useIgnoreFile": false
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
+    "includes": ["!**/*.vue", "**/*.js", "**/*.ts", "!**/dist"]
   },
   "formatter": {
     "enabled": true,

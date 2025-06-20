@@ -19,7 +19,7 @@
     }
   },
   "imports": {
-    "#*": "./src/*.js"
+    "#/*": "./src/*.js"
   },
   "keywords": [],
   "author": "",

@@ -28,4 +28,9 @@ export default {
       external: ["vue"],
     },
   },
+  resolve: {
+    alias: {
+      "#": resolve(__dirname, "src"),
+    },
+  },
 };

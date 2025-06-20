@@ -12,5 +12,8 @@
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "always"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "Wscats.vue",
   }
 }
