@@ -22,11 +22,13 @@
     "paths": {
       "#/*": [
         "./src/*"
-      ]
+      ],
     },
   },
   "include": [
     "src/**/*",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "types/**/*",
+    "auto-imports.d.ts",
   ]
 }

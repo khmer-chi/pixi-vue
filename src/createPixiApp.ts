@@ -33,29 +33,39 @@ export async function createPixiApp(rootComponent: Component, el: HTMLElement) {
     // 更新節點屬性
     patchProp(el, key, prevValue, nextValue) {
       switch (key) {
-        case "texture":
+        case "texture": {
           if (el instanceof Sprite) {
             el.texture = Texture.from(nextValue);
           }
           break;
-        case "text":
+        }
+        case "text": {
           if (el instanceof Text) {
             el.text = nextValue;
           }
           break;
+        }
+        case "style": {
+          if (el instanceof Text) {
+            el[key] = nextValue;
+          }
+          break;
+        }
         case "x":
         case "y":
         case "rotation":
         case "scale":
-        case "alpha":
+        case "alpha": {
           el[key] = nextValue;
           break;
-        case "anchor":
+        }
+        case "anchor": {
           if (el instanceof Sprite) {
             el.anchor.set(nextValue.x, nextValue.y);
           }
           break;
-        case "onClick":
+        }
+        case "onClick": {
           // 移除舊的事件監聽器
           if (prevValue) {
             el.off("pointerdown", prevValue);
@@ -65,21 +75,23 @@ export async function createPixiApp(rootComponent: Component, el: HTMLElement) {
             el.on("pointerdown", nextValue);
           }
           break;
-        default:
+        }
+        default: {
           console.warn(`Property ${key} not supported`);
+        }
       }
     },
 
     // 插入節點
     insert(el, parent) {
       if (parent instanceof Container) {
-        parent.addChild(el as Container);
+        el && parent?.addChild(el as Container);
       }
     },
 
     // 移除節點
     remove(el) {
-      if (el.parent) {
+      if (el?.parent) {
         el.parent.removeChild(el);
         el.destroy();
       }
@@ -99,16 +111,18 @@ export async function createPixiApp(rootComponent: Component, el: HTMLElement) {
 
     // 返回父節點
     parentNode(node) {
-      return node.parent;
+      if (node) return node.parent;
     },
 
     // 兄弟節點（Pixi.js 不需要）
     nextSibling(_node) {
-      throw new Error("nextSibling not implemented.");
+      return null;
+      // throw new Error("nextSibling not implemented.");
     },
 
-    createComment: (_text: string): RendererNode => {
-      throw new Error("createComment not implemented.");
+    createComment: (_text: string) => {
+      return null;
+      // throw new Error("createComment not implemented.");
     },
     setText: (_node: RendererNode, _text: string): void => {
       throw new Error("setText not implemented.");

@@ -7,7 +7,13 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["!**/*.vue", "**/*.js", "**/*.ts", "!**/dist"]
+    "includes": [
+      "!**/*.vue",
+      "**/*.js",
+      "**/*.ts",
+      "!dist/*",
+      "!node_modules/**/*"
+    ]
   },
   "formatter": {
     "enabled": true,
