@@ -26,7 +26,7 @@ export default {
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["vue", "@vitejs/plugin-vue"],
+      external: ["vue", "pixi.js", "@pixi/layout"],
     },
     sourcemap: true, // 生成 source map
     chunkSizeWarningLimit: 1000,
