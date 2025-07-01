@@ -2,7 +2,7 @@
 
 ## how to install
 
-npm install pixi-vue
+npm i @khmer-chi/pixi-vue
 
 ## support
 
