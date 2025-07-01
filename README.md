@@ -1,8 +1,14 @@
+## [my blog](https://taiwan.im/article/release-open-source-pixi-vue.html)
+
 ## how to install
 
 npm install pixi-vue
 
-current support pixi.js@8.9.2
+## support
+
+1. pixi.js@8.9.2
+2. vue@3
+3. @pixi/layout
 
 ## how to use
 
