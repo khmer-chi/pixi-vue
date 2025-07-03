@@ -1,20 +1,28 @@
 import type { LayoutOptions } from "@pixi/layout";
 import type {
+  LayoutAnimatedSprite,
   LayoutBitmapText,
   LayoutContainer,
   LayoutHTMLText,
+  LayoutMesh,
+  LayoutNineSliceSprite,
   LayoutSprite,
   LayoutText,
+  LayoutTilingSprite,
   LayoutView,
 } from "@pixi/layout/components";
 import type {
+  AnimatedSprite,
   BitmapText,
   Container,
   Graphics,
   HTMLText,
+  Mesh,
+  NineSliceSprite,
   Renderer,
   Sprite,
   Text,
+  TilingSprite,
 } from "pixi.js";
 import type { DefineComponent, UnwrapRef } from "vue";
 
@@ -45,4 +53,14 @@ export interface CustomVueComponent {
   readonly PixiSprite: VueDefineProps<typeof Sprite>;
   readonly PixiBitmapText: VueDefineProps<typeof BitmapText>;
   readonly PixiHtmlText: VueDefineProps<typeof HTMLText>;
+
+  readonly PixiAnimatedSprite: VueDefineProps<typeof AnimatedSprite>;
+  readonly PixiTilingSprite: VueDefineProps<typeof TilingSprite>;
+  readonly PixiNineSliceSprite: VueDefineProps<typeof NineSliceSprite>;
+  readonly PixiMesh: VueDefineProps<typeof Mesh>;
+
+  readonly LayoutAnimatedSprite: VueDefineProps<typeof LayoutAnimatedSprite>;
+  readonly LayoutTilingSprite: VueDefineProps<typeof LayoutTilingSprite>;
+  readonly LayoutNineSliceSprite: VueDefineProps<typeof LayoutNineSliceSprite>;
+  readonly LayoutMesh: VueDefineProps<typeof LayoutMesh>;
 }
