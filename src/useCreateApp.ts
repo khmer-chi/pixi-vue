@@ -18,6 +18,7 @@ import {
   LayoutAnimatedSprite,
   LayoutBitmapText,
   LayoutContainer,
+  LayoutGraphics,
   LayoutHTMLText,
   LayoutMesh,
   LayoutNineSliceSprite,
@@ -54,9 +55,11 @@ export const useCreateApp = (application: Application) => {
     const children = childrenElMap.get(object) ?? [];
     for (let i = 0; i < children?.length; i++) {
       const el = children[i];
+      console.log(el)
       el.scale = (elScaleMap.get(el) ?? 1) * scaleEffect;
     }
   };
+
   return createRenderer<RendererNode | null>({
     createElement(
       type,
@@ -64,17 +67,19 @@ export const useCreateApp = (application: Application) => {
       _isCustomizedBuiltIn,
       vnodeProps,
     ): RendererNode {
+      console.log({ type })
       const map = new Map<string, unknown>([
-        ["layout-view", LayoutView],
-        ["layout-container", LayoutContainer],
-        ["layout-text", LayoutText],
-        ["layout-sprite", LayoutSprite],
-        ["layout-bitmap-text", LayoutBitmapText],
-        ["layout-text", LayoutHTMLText],
-        ["layout-pixi-animated-sprite", LayoutAnimatedSprite],
-        ["layout-pixi-tiling-sprite", LayoutTilingSprite],
-        ["layout-pixi-nine-slice-sprite", LayoutNineSliceSprite],
-        ["layout-pixi-mesh", LayoutMesh],
+        ["pixi-layout-view", LayoutView],
+        ["pixi-layout-container", LayoutContainer],
+        ["pixi-layout-text", LayoutText],
+        ["pixi-layout-sprite", LayoutSprite],
+        ["pixi-layout-bitmap-text", LayoutBitmapText],
+        ["pixi-layout-html-text", LayoutHTMLText],
+        ["pixi-layout-pixi-animated-sprite", LayoutAnimatedSprite],
+        ["pixi-layout-pixi-tiling-sprite", LayoutTilingSprite],
+        ["pixi-layout-pixi-nine-slice-sprite", LayoutNineSliceSprite],
+        ["pixi-layout-pixi-mesh", LayoutMesh],
+        ["pixi-layout-graphics", LayoutGraphics],
 
         ["pixi-container", Container],
         ["pixi-sprite", Sprite],
@@ -115,8 +120,11 @@ export const useCreateApp = (application: Application) => {
           object.on(
             "layout",
             (event) => {
+              console.log(event.computedLayout.width, (vnodeProps as any).width)
               const _scaleX =
                 event.computedLayout.width / (vnodeProps as any).width;
+              console.log({ _scaleX })
+
               const scaleEffect = _scaleX > 1 ? 1 : _scaleX;
               setScaleEffect(object, scaleEffect);
             },
@@ -124,6 +132,10 @@ export const useCreateApp = (application: Application) => {
           );
           elAbortControllerMap.set(object, controller);
         }
+        if (object instanceof Graphics) {
+          (vnodeProps as any).draw(object);
+        }
+
         return object;
       }
       switch (toKebabCase(type)) {

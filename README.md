@@ -6,9 +6,9 @@ npm i @khmer-chi/pixi-vue
 
 ## support
 
-1. pixi.js@8.9.2
+1. pixi.js@8
 2. vue@3
-3. @pixi/layout
+3. @pixi/layout@3
 
 ## how to use
 
