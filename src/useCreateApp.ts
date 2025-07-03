@@ -28,6 +28,10 @@ import {
 } from "@pixi/layout/components";
 import { toKebabCase } from "#/toKebabCase";
 
+class RwdContainer extends LayoutContainer {
+  orignalW = -1;
+  orignalH = -1;
+}
 const checkCommon = <T>(el: T): Container | false => {
   if (el instanceof Container) return el;
   if (el instanceof Sprite) return el;
@@ -42,6 +46,17 @@ export const useCreateApp = (application: Application) => {
   const parentElMap = new WeakMap<RendererNode, RendererNode>();
   const elScaleMap = new WeakMap<RendererNode, number>();
   const elScaleEffectMap = new WeakMap<RendererNode, number>();
+  const elAbortControllerMap = new WeakMap<RendererNode, AbortController>();
+
+
+  const setScaleEffect = (object: Container, scaleEffect: number) => {
+    elScaleEffectMap.set(object, scaleEffect);
+    const children = childrenElMap.get(object) ?? [];
+    for (let i = 0; i < children?.length; i++) {
+      const el = children[i];
+      el.scale = (elScaleMap.get(el) ?? 1) * scaleEffect;
+    }
+  };
   return createRenderer<RendererNode | null>({
     createElement(
       type,
@@ -50,48 +65,81 @@ export const useCreateApp = (application: Application) => {
       vnodeProps,
     ): RendererNode {
       const map = new Map<string, unknown>([
-        ['layout-view', LayoutView],
-        ['layout-container', LayoutContainer],
-        ['layout-text', LayoutText],
-        ['layout-sprite', LayoutSprite],
-        ['layout-bitmap-text', LayoutBitmapText],
-        ['layout-text', LayoutHTMLText],
-        ['layout-pixi-animated-sprite', LayoutAnimatedSprite],
-        ['layout-pixi-tiling-sprite', LayoutTilingSprite],
-        ['layout-pixi-nine-slice-sprite', LayoutNineSliceSprite],
-        ['layout-pixi-mesh', LayoutMesh],
+        ["layout-view", LayoutView],
+        ["layout-container", LayoutContainer],
+        ["layout-text", LayoutText],
+        ["layout-sprite", LayoutSprite],
+        ["layout-bitmap-text", LayoutBitmapText],
+        ["layout-text", LayoutHTMLText],
+        ["layout-pixi-animated-sprite", LayoutAnimatedSprite],
+        ["layout-pixi-tiling-sprite", LayoutTilingSprite],
+        ["layout-pixi-nine-slice-sprite", LayoutNineSliceSprite],
+        ["layout-pixi-mesh", LayoutMesh],
 
-        ['pixi-container', Container],
-        ['pixi-sprite', Sprite],
-        ['pixi-text', Text],
-        ['pixi-graphics', Graphics],
-        ['pixi-bitmap-text', BitmapText],
-        ['pixi-html-text', HTMLText],
-        ['pixi-animated-sprite', AnimatedSprite],
-        ['pixi-tiling-sprite', TilingSprite],
-        ['pixi-nine-slice-sprite', NineSliceSprite],
-        ['pixi-mesh', Mesh],
+        ["pixi-container", Container],
+        ["pixi-sprite", Sprite],
+        ["pixi-text", Text],
+        ["pixi-graphics", Graphics],
+        ["pixi-bitmap-text", BitmapText],
+        ["pixi-html-text", HTMLText],
+        ["pixi-animated-sprite", AnimatedSprite],
+        ["pixi-tiling-sprite", TilingSprite],
+        ["pixi-nine-slice-sprite", NineSliceSprite],
+        ["pixi-mesh", Mesh],
+
+        ["pixi-rwd-container", RwdContainer],
       ]);
 
       const classFunc = map.get(toKebabCase(type));
       if (classFunc) {
-        return new (classFunc as any)(vnodeProps as any)
+        const classArgsOptions = { ...(vnodeProps as any) };
+        if (classFunc == RwdContainer) {
+          delete classArgsOptions.width;
+          delete classArgsOptions.height;
+
+          classArgsOptions.layout = {
+            ...vnodeProps?.layout,
+            height: "100%",
+            aspectRatio: (vnodeProps as any).width / (vnodeProps as any).height,
+          };
+        }
+
+        const object = new (classFunc as any)(classArgsOptions);
+
+        if (vnodeProps?.scale) elScaleMap.set(object, vnodeProps.scale);
+
+        if (object instanceof RwdContainer) {
+          const controller = new AbortController();
+          object.orignalW = (vnodeProps as any).width;
+          object.orignalH = (vnodeProps as any).height;
+          object.on(
+            "layout",
+            (event) => {
+              const _scaleX =
+                event.computedLayout.width / (vnodeProps as any).width;
+              const scaleEffect = _scaleX > 1 ? 1 : _scaleX;
+              setScaleEffect(object, scaleEffect);
+            },
+            { signal: controller.signal },
+          );
+          elAbortControllerMap.set(object, controller);
+        }
+        return object;
       }
       switch (toKebabCase(type)) {
         case "pixi-application": {
           if (vnodeProps) {
-            const { layout } = vnodeProps
-            if (layout)
-              application.stage.layout = layout
-            const onAppResize = vnodeProps['on:appResize']
+            const { layout } = vnodeProps;
+            if (layout) application.stage.layout = layout;
+            const onAppResize = vnodeProps["on:appResize"];
 
             application.renderer.on("resize", (...args) => {
-              const [width, height] = args
+              const [width, height] = args;
               application.stage.layout = {
                 width,
                 height,
               };
-              onAppResize(...args)
+              onAppResize(...args);
             });
             application.resize();
           }
@@ -112,27 +160,18 @@ export const useCreateApp = (application: Application) => {
       _namespace,
       _parentComponent,
     ) {
-      if (!prevValue) return
-      // console.log(el, key, { prevValue, nextValue })
+      if (!prevValue) return;
       switch (key) {
         case "on:appResize": {
           if (el instanceof Application) {
-            if (nextValue)
-              el.renderer.on("resize", nextValue);
-
-            if (prevValue)
-              el.renderer.off("resize", prevValue);
+            el.renderer.on("resize", nextValue);
+            el.renderer.off("resize", prevValue);
           }
           break;
         }
         case "scaleEffect": {
-          if (el instanceof Container) {
-            elScaleEffectMap.set(el, nextValue);
-            const children = childrenElMap.get(el) ?? [];
-            for (let i = 0; i < children?.length; i++) {
-              const el = children[i];
-              el.scale = (elScaleMap.get(el) ?? 1) * nextValue;
-            }
+          if (el instanceof RwdContainer) {
+            setScaleEffect(el, nextValue);
           }
           break;
         }
@@ -177,6 +216,18 @@ export const useCreateApp = (application: Application) => {
         case "alpha": {
           const newEl = checkCommon(el);
           if (!newEl) return;
+          if (newEl instanceof RwdContainer) {
+
+            if (key == "width") {
+              newEl.orignalW = nextValue
+            } else if (key == "height") {
+              newEl.orignalH = nextValue
+            }
+            newEl.layout = {
+              aspectRatio: newEl.orignalW / newEl.orignalH
+            }
+            break;
+          }
           if (key == "scale") {
             elScaleMap.set(newEl, nextValue);
             const parentEl = parentElMap.get(newEl);
@@ -197,14 +248,8 @@ export const useCreateApp = (application: Application) => {
         case "onClick": {
           const newEl = checkCommon(el);
           if (!newEl) return;
-          // 移除舊的事件監聽器
-          if (prevValue) {
-            newEl.off("pointerdown", prevValue);
-          }
-          // 添加新的事件監聽器
-          if (nextValue) {
-            newEl.on("pointerdown", nextValue);
-          }
+          newEl.off("pointerdown", prevValue);
+          newEl.on("pointerdown", nextValue);
           break;
         }
         case "draw": {
@@ -223,22 +268,35 @@ export const useCreateApp = (application: Application) => {
     insert(el, parent) {
       if (parent instanceof Container && el instanceof Container) {
         if (!childrenElMap.has(parent)) childrenElMap.set(parent, []);
-        const array = childrenElMap.get(parent);
-        if (!array) return;
-        array.push(el);
+        (childrenElMap.get(parent) ?? []).push(el);
+
         parentElMap.set(el, parent);
         parent.addChild(el);
       } else if (el instanceof Application && parent instanceof HTMLElement) {
-        parent.appendChild(el.canvas)
+        parent.appendChild(el.canvas);
       } else if (el instanceof Container && parent instanceof Application) {
-        parent.stage.addChild(el)
+        parent.stage.addChild(el);
       }
     },
 
     remove(el) {
-      if (el?.parent) {
-        el.parent.removeChild(el);
+      if (!el) return
+      const parent = el.parent as RendererNode
+
+      if (parent instanceof Container && el instanceof Container) {
+        parent.removeChild(el);
+      } else if (el instanceof Application && parent instanceof HTMLElement) {
+        parent.removeChild(el.canvas);
+      } else if (el instanceof Container && parent instanceof Application) {
+        parent.stage.removeChild(el);
+      }
+      if (el instanceof Container) {
         el.destroy();
+
+      }
+      const AbortController = elAbortControllerMap.get(el)
+      if (AbortController) {
+        AbortController.abort();
       }
     },
 
