@@ -1,3 +1,4 @@
+import type { LayoutOptions } from "@pixi/layout";
 import type {
   LayoutBitmapText,
   LayoutContainer,
@@ -6,14 +7,24 @@ import type {
   LayoutText,
   LayoutView,
 } from "@pixi/layout/components";
-import type { BitmapText, Container, Graphics, HTMLText, Sprite, Text } from "pixi.js";
+import type {
+  BitmapText,
+  Container,
+  Graphics,
+  HTMLText,
+  Renderer,
+  Sprite,
+  Text,
+} from "pixi.js";
 import type { DefineComponent, UnwrapRef } from "vue";
 
 type ConstructParam<T extends abstract new (...args: any) => any> =
   ConstructorParameters<T>[0];
+
 type VueDefineProps<T extends abstract new (...args: any) => any> = UnwrapRef<
   DefineComponent<ConstructParam<T>>
 >;
+
 export interface CustomVueComponent {
   readonly LayoutContainer: VueDefineProps<typeof LayoutContainer>;
   readonly LayoutSprite: VueDefineProps<typeof LayoutSprite>;
@@ -22,6 +33,12 @@ export interface CustomVueComponent {
   readonly LayoutBitmapText: VueDefineProps<typeof LayoutBitmapText>;
   readonly LayoutHtmlText: VueDefineProps<typeof LayoutHTMLText>;
 
+  readonly PixiApplication: DefineComponent<{
+    layout: Omit<LayoutOptions, "target" | "backgroundColor">;
+    onAppResize: (
+      ...payload: Parameters<Parameters<Renderer["on"]>[1]>
+    ) => void;
+  }>;
   readonly PixiContainer: VueDefineProps<typeof Container>;
   readonly PixiGraphics: VueDefineProps<typeof Graphics>;
   readonly PixiText: VueDefineProps<typeof Text>;

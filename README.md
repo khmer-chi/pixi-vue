@@ -46,18 +46,10 @@ createPixiApp(App, document.getElementById("app")!);
 import { PixiRwdContainer } from "@khmer-chi/pixi-vue";
 </script>
 <template>
-  <PixiRwdContainer
-    :width="500"
-    :height="500"
-    :appLayout="{
-      justifyContent: 'flex-start',
-      alignItems: 'flex-start',
-    }"
+  <PixiApplication
     :layout="{
-      backgroundColor: '#1099bb',
       justifyContent: 'center',
       alignItems: 'center',
-      flexDirection: 'column',
     }"
     @appResize="
       (...args) => {
@@ -65,14 +57,25 @@ import { PixiRwdContainer } from "@khmer-chi/pixi-vue";
       }
     "
   >
-    <layout-text
-      text="test123"
-      :layout="{ width: 200, height: 100, backgroundColor: '#000fff' }"
-      :style="{
-        fill: '#fff000',
+    <PixiRwdContainer
+      :width="500"
+      :height="500"
+      :layout="{
+        backgroundColor: '#1099bb',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
       }"
-    />
-  </PixiRwdContainer>
+    >
+      <layout-text
+        text="12123243"
+        :layout="{ width: 200, height: 100, backgroundColor: '#000fff' }"
+        :style="{
+          fill: '#fff000',
+        }"
+      />
+    </PixiRwdContainer>
+  </PixiApplication>
 </template>
 ```
 
@@ -104,12 +107,4 @@ import { PixiRwdContainer } from "@khmer-chi/pixi-vue";
 
 ## to do list
 
-1. finish incomplete component
-2. unit test
-
-## incomplete component
-
-1. AnimatedSprite
-2. TilingSprite
-3. NineSliceSprite
-4. Mesh
+1. unit test

@@ -2,18 +2,10 @@
 import PixiRwdContainer from "#/PixiRwdContainer.vue";
 </script>
 <template>
-  <PixiRwdContainer
-    :width="500"
-    :height="500"
-    :appLayout="{
-      justifyContent: 'flex-start',
-      alignItems: 'flex-start',
-    }"
+  <PixiApplication
     :layout="{
-      backgroundColor: '#1099bb',
       justifyContent: 'center',
       alignItems: 'center',
-      flexDirection: 'column',
     }"
     @appResize="
       (...args) => {
@@ -21,12 +13,23 @@ import PixiRwdContainer from "#/PixiRwdContainer.vue";
       }
     "
   >
-    <layout-text
-      text="12123243"
-      :layout="{ width: 200, height: 100, backgroundColor: '#000fff' }"
-      :style="{
-        fill: '#fff000',
+    <PixiRwdContainer
+      :width="500"
+      :height="500"
+      :layout="{
+        backgroundColor: '#1099bb',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
       }"
-    />
-  </PixiRwdContainer>
+    >
+      <layout-text
+        text="12123243"
+        :layout="{ width: 200, height: 100, backgroundColor: '#000fff' }"
+        :style="{
+          fill: '#fff000',
+        }"
+      />
+    </PixiRwdContainer>
+  </PixiApplication>
 </template>
