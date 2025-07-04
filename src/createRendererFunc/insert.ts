@@ -54,7 +54,6 @@ const updateElByNode = (el: RendererElement, elYogaNodeMap: WeakMap<RendererNode
 
   const children = el.children
   for (let i = 0; i < children.length; i++) {
-    const childEl = children[i];
-    updateElByNode(childEl, elYogaNodeMap);
+    updateElByNode(children[i], elYogaNodeMap);
   }
 }
