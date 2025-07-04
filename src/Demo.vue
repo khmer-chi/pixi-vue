@@ -13,25 +13,26 @@
     "
   >
     <PixiRwdContainer
-      :width="500"
-      :height="500"
+      :width="200"
+      :height="200"
       :layout="{
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
         backgroundColor: '#1099bb',
       }"
     >
       <PixiText
         text="12123243"
         :layout="{
-          width: 200,
-          height: 200,
+          width: 100,
+          height: 100,
           backgroundColor: '#000fff',
         }"
         :style="{
           fill: '#fff000',
         }"
       />
+
       <!-- <PixiLayoutText
         text="12123243"
         :layout="{ width: 250, height: 100, backgroundColor: '#000fff' }"
@@ -39,7 +40,7 @@
           fill: '#fff000',
         }"
       /> -->
-      <PixiGraphics
+      <!-- <PixiGraphics
         :layout="{ width: 200, height: 200 }"
         :draw="
           (graphics) => {
@@ -52,7 +53,7 @@
               .fill({ color: 0x00ff00, alpha: 0.5 }); // Fill the shape
           }
         "
-      />
+      /> -->
     </PixiRwdContainer>
   </PixiApplication>
 </template>

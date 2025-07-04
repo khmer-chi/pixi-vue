@@ -1,6 +1,7 @@
-import "@pixi/layout";
+// import "@pixi/layout";
 import { Application, type ApplicationOptions } from "pixi.js";
 import type { Component } from "vue";
+import { loadYoga } from "yoga-layout/load";
 import { useCreateApp } from "#/useCreateApp";
 export async function createPixiApp(
   rootComponent: Component,
@@ -13,6 +14,7 @@ export async function createPixiApp(
     resizeTo: window,
     ...appInitOption,
   });
-  const { createApp } = useCreateApp(pixiApplication);
+  const yoga = (await loadYoga())
+  const { createApp } = useCreateApp(pixiApplication, yoga);
   createApp(rootComponent).mount(el);
 }

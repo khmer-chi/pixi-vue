@@ -1,16 +1,16 @@
-import type { LayoutOptions } from "@pixi/layout";
-import type {
-  LayoutAnimatedSprite,
-  LayoutBitmapText,
-  LayoutContainer,
-  LayoutHTMLText,
-  LayoutMesh,
-  LayoutNineSliceSprite,
-  LayoutSprite,
-  LayoutText,
-  LayoutTilingSprite,
-  LayoutView,
-} from "@pixi/layout/components";
+// import type { LayoutOptions } from "@pixi/layout";
+// import type {
+//   LayoutAnimatedSprite,
+//   LayoutBitmapText,
+//   LayoutContainer,
+//   LayoutHTMLText,
+//   LayoutMesh,
+//   LayoutNineSliceSprite,
+//   LayoutSprite,
+//   LayoutText,
+//   LayoutTilingSprite,
+//   LayoutView,
+// } from "@pixi/layout/components";
 import type {
   AnimatedSprite,
   BitmapText,
@@ -34,15 +34,15 @@ type VueDefineProps<T extends abstract new (...args: any) => any, U = any> = Unw
 >;
 
 export interface CustomVueComponent {
-  readonly PixiLayoutContainer: VueDefineProps<typeof LayoutContainer>;
-  readonly PixiLayoutSprite: VueDefineProps<typeof LayoutSprite>;
-  readonly PixiLayoutText: VueDefineProps<typeof LayoutText>;
-  readonly PixiLayoutView: VueDefineProps<typeof LayoutView>;
-  readonly PixiLayoutBitmapText: VueDefineProps<typeof LayoutBitmapText>;
-  readonly PixiLayoutHtmlText: VueDefineProps<typeof LayoutHTMLText>;
+  // readonly PixiLayoutContainer: VueDefineProps<typeof LayoutContainer>;
+  // readonly PixiLayoutSprite: VueDefineProps<typeof LayoutSprite>;
+  // readonly PixiLayoutText: VueDefineProps<typeof LayoutText>;
+  // readonly PixiLayoutView: VueDefineProps<typeof LayoutView>;
+  // readonly PixiLayoutBitmapText: VueDefineProps<typeof LayoutBitmapText>;
+  // readonly PixiLayoutHtmlText: VueDefineProps<typeof LayoutHTMLText>;
 
   readonly PixiApplication: DefineComponent<{
-    layout: Omit<LayoutOptions, "target" | "backgroundColor">;
+    // layout: Omit<LayoutOptions, "target" | "backgroundColor">;
     onAppResize: (
       ...payload: Parameters<Parameters<Renderer["on"]>[1]>
     ) => void;
@@ -60,10 +60,13 @@ export interface CustomVueComponent {
   readonly PixiMesh: VueDefineProps<typeof Mesh>;
 
   readonly PixiLayoutGraphics: VueDefineProps<typeof Graphics, { draw: (graphics: Graphics) => void }>;
-  readonly PixiLayoutAnimatedSprite: VueDefineProps<typeof LayoutAnimatedSprite>;
-  readonly PixiLayoutTilingSprite: VueDefineProps<typeof LayoutTilingSprite>;
-  readonly PixiLayoutNineSliceSprite: VueDefineProps<typeof LayoutNineSliceSprite>;
-  readonly PixiLayoutMesh: VueDefineProps<typeof LayoutMesh>;
+  // readonly PixiLayoutAnimatedSprite: VueDefineProps<typeof LayoutAnimatedSprite>;
+  // readonly PixiLayoutTilingSprite: VueDefineProps<typeof LayoutTilingSprite>;
+  // readonly PixiLayoutNineSliceSprite: VueDefineProps<typeof LayoutNineSliceSprite>;
+  // readonly PixiLayoutMesh: VueDefineProps<typeof LayoutMesh>;
 
-  readonly PixiRwdContainer: DefineComponent<{ layout: Omit<LayoutOptions, "target">, width: number, height: number }>;
+  readonly PixiRwdContainer: DefineComponent<{
+    // layout: Omit<LayoutOptions, "target">, 
+    width: number, height: number
+  }>;
 }

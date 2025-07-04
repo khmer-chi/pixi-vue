@@ -8,15 +8,15 @@ importers:
 
   .:
     dependencies:
-      '@pixi/layout':
-        specifier: ^3.0.2
-        version: 3.0.2(@types/react@19.1.8)(pixi.js@8.10.2)(react@19.1.0)(yoga-layout@3.2.1)
       pixi.js:
-        specifier: 8.10.2
-        version: 8.10.2
+        specifier: 8.11.0
+        version: 8.11.0
       vue:
         specifier: ^3.5.17
         version: 3.5.17(typescript@5.8.3)
+      yoga-layout:
+        specifier: ^3.2.1
+        version: 3.2.1
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.0.0
@@ -275,18 +275,6 @@ packages:
   '@pixi/colord@2.9.6':
     resolution: {integrity: sha512-nezytU2pw587fQstUu1AsJZDVEynjskwOL+kibwcdxsMBFqPsFFNA7xl0ii/gXuDi6M0xj3mfRJj8pBSc2jCfA==}
 
-  '@pixi/layout@3.0.2':
-    resolution: {integrity: sha512-xZwGWhpRa7c/gnbTsN9lguDH1qVQBlqppFbsgU8EpDoSJOw3JqODnCPebeEi5ZzL3KiCz3MW1bYaUrPjeKAJnQ==}
-    peerDependencies:
-      pixi.js: ^8
-      yoga-layout: ^3
-
-  '@pixi/react@8.0.2':
-    resolution: {integrity: sha512-A42Bw/1YlxxCXhb+nDIgzPpACx5dOh7Yi+ZfBMlZ1sBB/qc7qyX9k7bdDtrnMqz8OofyF2FXg9gPw9MISFsQTA==}
-    peerDependencies:
-      pixi.js: ^8.2.6
-      react: '>=19.0.0'
-
   '@rolldown/pluginutils@1.0.0-beta.19':
     resolution: {integrity: sha512-3FL3mnMbPu0muGOCaKAhhFEYmqv9eTfPSJRJmANrCwtgK8VuxpsZDGK+m0LYAGoyO8+0j5uRe4PeyPDK1yA/hA==}
 
@@ -435,14 +423,6 @@ packages:
 
   '@types/node@24.0.3':
     resolution: {integrity: sha512-R4I/kzCYAdRLzfiCabn9hxWfbuHS573x+r0dJMkkzThEa7pbrcDWK+9zu3e7aBOouf+rQAciqPFMnxwr0aWgKg==}
-
-  '@types/react-reconciler@0.28.9':
-    resolution: {integrity: sha512-HHM3nxyUZ3zAylX8ZEyrDNd2XZOnQ0D5XfunJF5FLQnZbHHYq4UWvW1QfelQNXv1ICNkwYhfxjwfnqivYB6bFg==}
-    peerDependencies:
-      '@types/react': '*'
-
-  '@types/react@19.1.8':
-    resolution: {integrity: sha512-AwAfQ2Wa5bCx9WP8nZL2uMZWod7J7/JSplxbTmBQ5ms6QpqNYm672H0Vu9ZVKVngQ+ii4R/byguVEUZQyeg44g==}
 
   '@vitejs/plugin-vue@6.0.0':
     resolution: {integrity: sha512-iAliE72WsdhjzTOp2DtvKThq1VBC4REhwRcaA+zPAAph6I+OQhUXv+Xu2KS7ElxYtb7Zc/3R30Hwv1DxEo7NXQ==}
@@ -660,11 +640,6 @@ packages:
   ismobilejs@1.1.1:
     resolution: {integrity: sha512-VaFW53yt8QO61k2WJui0dHf4SlL8lxBofUuUmwBo0ljPk0Drz2TiuDW4jo3wDcv41qy/SxrJ+VAzJ/qYqsmzRw==}
 
-  its-fine@2.0.0:
-    resolution: {integrity: sha512-KLViCmWx94zOvpLwSlsx6yOCeMhZYaxrJV87Po5k/FoZzcPSahvK5qJ7fYhS61sZi5ikmh2S3Hz55A2l3U69ng==}
-    peerDependencies:
-      react: ^19.0.0
-
   jju@1.4.0:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
 
@@ -734,8 +709,8 @@ packages:
     resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
     engines: {node: '>=12'}
 
-  pixi.js@8.10.2:
-    resolution: {integrity: sha512-utRKxzTwNsIhaxOikxIBxKPfxuOyVkPvdYipY23ZEyWSYhONosrQlcB9nymeIcbsrsuSdwExX0eTnHTDjTN3UQ==}
+  pixi.js@8.11.0:
+    resolution: {integrity: sha512-dyuThzncsgEgJZnvd/A/5x6IkUERbK+phXqUQrI+0C6WE+8xqGH5VChRTLecemhgZF0kQ+gZOM3tJTX9937xpg==}
 
   pkg-types@1.3.1:
     resolution: {integrity: sha512-/Jm5M4RvtBFVkKWRu2BLUTNP8/M2a+UwuAX+ae4770q1qVGtfjG+WTCupoZixokjmHiry8uI+dlY8KXYV5HVVQ==}
@@ -754,16 +729,6 @@ packages:
   quansync@0.2.10:
     resolution: {integrity: sha512-t41VRkMYbkHyCYmOvx/6URnN80H7k4X0lLdBMGsz+maAwrJQYB1djpV6vHrQIBE0WBSGqhtEHrK9U3DWWH8v7A==}
 
-  react-reconciler@0.31.0:
-    resolution: {integrity: sha512-7Ob7Z+URmesIsIVRjnLoDGwBEG/tVitidU0nMsqX/eeJaLY89RISO/10ERe0MqmzuKUUB1rmY+h1itMbUHg9BQ==}
-    engines: {node: '>=0.10.0'}
-    peerDependencies:
-      react: ^19.0.0
-
-  react@19.1.0:
-    resolution: {integrity: sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==}
-    engines: {node: '>=0.10.0'}
-
   require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
@@ -777,9 +742,6 @@ packages:
     resolution: {integrity: sha512-qHcdEzLCiktQIfwBq420pn2dP+30uzqYxv9ETm91wdt2R9AFcWfjNAmje4NWlnCIQ5RMTzVf0ZyisOKqHR6RwA==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
-
-  scheduler@0.25.0:
-    resolution: {integrity: sha512-xFVuu11jh+xcO7JOAGJNOXld8/TcEHK/4CituBUeUb5hqxJLj9YuemAEuvm9gQ/+pgXYfbQuqAkiYu+u7YEsNA==}
 
   semver@7.5.4:
     resolution: {integrity: sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==}
@@ -1076,26 +1038,6 @@ snapshots:
 
   '@pixi/colord@2.9.6': {}
 
-  '@pixi/layout@3.0.2(@types/react@19.1.8)(pixi.js@8.10.2)(react@19.1.0)(yoga-layout@3.2.1)':
-    dependencies:
-      pixi.js: 8.10.2
-      yoga-layout: 3.2.1
-    optionalDependencies:
-      '@pixi/react': 8.0.2(@types/react@19.1.8)(pixi.js@8.10.2)(react@19.1.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - react
-
-  '@pixi/react@8.0.2(@types/react@19.1.8)(pixi.js@8.10.2)(react@19.1.0)':
-    dependencies:
-      its-fine: 2.0.0(@types/react@19.1.8)(react@19.1.0)
-      pixi.js: 8.10.2
-      react: 19.1.0
-      react-reconciler: 0.31.0(react@19.1.0)
-    transitivePeerDependencies:
-      - '@types/react'
-    optional: true
-
   '@rolldown/pluginutils@1.0.0-beta.19': {}
 
   '@rollup/pluginutils@5.2.0(rollup@4.44.0)':
@@ -1211,16 +1153,6 @@ snapshots:
   '@types/node@24.0.3':
     dependencies:
       undici-types: 7.8.0
-    optional: true
-
-  '@types/react-reconciler@0.28.9(@types/react@19.1.8)':
-    dependencies:
-      '@types/react': 19.1.8
-    optional: true
-
-  '@types/react@19.1.8':
-    dependencies:
-      csstype: 3.1.3
     optional: true
 
   '@vitejs/plugin-vue@6.0.0(vite@7.0.0(@types/node@24.0.3))(vue@3.5.17(typescript@5.8.3))':
@@ -1466,14 +1398,6 @@ snapshots:
 
   ismobilejs@1.1.1: {}
 
-  its-fine@2.0.0(@types/react@19.1.8)(react@19.1.0):
-    dependencies:
-      '@types/react-reconciler': 0.28.9(@types/react@19.1.8)
-      react: 19.1.0
-    transitivePeerDependencies:
-      - '@types/react'
-    optional: true
-
   jju@1.4.0: {}
 
   js-binary-schema-parser@2.0.3: {}
@@ -1537,7 +1461,7 @@ snapshots:
 
   picomatch@4.0.2: {}
 
-  pixi.js@8.10.2:
+  pixi.js@8.11.0:
     dependencies:
       '@pixi/colord': 2.9.6
       '@types/css-font-loading-module': 0.0.12
@@ -1572,15 +1496,6 @@ snapshots:
 
   quansync@0.2.10: {}
 
-  react-reconciler@0.31.0(react@19.1.0):
-    dependencies:
-      react: 19.1.0
-      scheduler: 0.25.0
-    optional: true
-
-  react@19.1.0:
-    optional: true
-
   require-from-string@2.0.2: {}
 
   resolve@1.22.10:
@@ -1614,9 +1529,6 @@ snapshots:
       '@rollup/rollup-win32-ia32-msvc': 4.44.0
       '@rollup/rollup-win32-x64-msvc': 4.44.0
       fsevents: 2.3.3
-
-  scheduler@0.25.0:
-    optional: true
 
   semver@7.5.4:
     dependencies:
