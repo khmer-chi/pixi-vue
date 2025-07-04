@@ -16,8 +16,8 @@
       :width="200"
       :height="200"
       :layout="{
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: '#1099bb',
       }"
     >

@@ -13,7 +13,6 @@ const insertNode = (
   if (!parentYogaNode) return
 
   parentYogaNode.insertChild(yogaNode, parentYogaNode.getChildCount());
-  console.log(el, yogaNode, parentYogaNode);
 };
 
 export const insert = (
@@ -37,13 +36,25 @@ export const insert = (
     insertNode(el, parent.stage, elYogaNodeMap);
     const node = elYogaNodeMap.get(parent.stage)
     if (node) {
-      // console.log(node.getWidth(), node.getHeight())
-      // console.log(node.getChild(0).isDirty())
       node.calculateLayout(undefined, undefined, Direction.LTR)
-      // console.log(node.getChild(0).isDirty())
-      // calculateLayout(438, 438, Direction.LTR)
-      console.log(node.getComputedLayout(), node.getChild(0).getComputedLayout())
+      updateElByNode(parent.stage, elYogaNodeMap)
+      console.log(node.getComputedLayout(), node.getChild(0).getComputedLayout(), node.getChild(0).getChild(0).getComputedLayout())
     }
-    // node.calculateLayout(100, 300, Direction.LTR)
   }
 };
+const updateElByNode = (el: RendererElement, elYogaNodeMap: WeakMap<RendererNode, Node>) => {
+  const node = elYogaNodeMap.get(el) as Node;
+
+  const computedLayout = node.getComputedLayout()
+  const _el = el as Container
+  _el.x = computedLayout.left
+  _el.y = computedLayout.top
+  console.log('--------------');
+  console.log(el, computedLayout)
+
+  const children = el.children
+  for (let i = 0; i < children.length; i++) {
+    const childEl = children[i];
+    updateElByNode(childEl, elYogaNodeMap);
+  }
+}

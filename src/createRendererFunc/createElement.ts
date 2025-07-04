@@ -23,6 +23,40 @@ import {
 import { RwdContainer } from "#/createRendererFunc/RwdContainer";
 import { toKebabCase } from "#/toKebabCase";
 
+const setLayoutOnNode = (layout: Record<string, unknown>, node: Node) => {
+  if (layout.justifyContent) {
+    const map = new Map<string, Justify>([
+      ["flex-start", Justify.FlexStart],
+      ["center", Justify.Center],
+      ["flex-end", Justify.FlexEnd],
+      ["space-between", Justify.SpaceBetween],
+      ["space-around", Justify.SpaceAround],
+      ["space-evenly", Justify.SpaceEvenly],
+    ]);
+    const value = map.get(layout.justifyContent as string);
+    if (value) {
+      node.setJustifyContent(value);
+    }
+  }
+  if (layout.alignItem) {
+    const map = new Map<string, Align>([
+      ["auto", Align.Auto],
+      ["flex-start", Align.FlexStart],
+      ["center", Align.Center],
+      ["flex-end", Align.FlexEnd],
+      ["stretch", Align.Stretch],
+      ["baseline", Align.Baseline],
+      ["space-between", Align.SpaceBetween],
+      ["space-around", Align.SpaceAround],
+      ["space-evenly", Align.SpaceEvenly],
+    ]);
+    const value = map.get(layout.alignItem as string);
+    if (value) node.setAlignItems(value);
+  }
+  node.setWidth(layout.width as number | "auto" | `${number}%` | undefined);
+  node.setHeight(layout.height as number | "auto" | `${number}%` | undefined);
+
+};
 export const createElement = (
   type: string,
   vnodeProps: any,
@@ -50,61 +84,37 @@ export const createElement = (
   const classFunc = map.get(toKebabCase(type));
   if (classFunc) {
     const node = yoga.Node.create();
-    const classArgsOptions = { ...(vnodeProps as any) };
-    // if (classFunc == RwdContainer) {
-    //   delete classArgsOptions.width;
-    //   delete classArgsOptions.height;
 
-    //   classArgsOptions.layout = {
-    //     ...vnodeProps?.layout,
-    //     height: "100%",
-    //     aspectRatio: (vnodeProps as any).width / (vnodeProps as any).height,
-    //   };
-    // }
+    const layout = vnodeProps?.layout;
 
-    const object = new (classFunc as any)(classArgsOptions);
+    if (layout)
+      setLayoutOnNode(layout, node);
+    const object = new (classFunc as any)(vnodeProps as any);
 
     if (vnodeProps?.scale) elScaleMap.set(object, vnodeProps.scale);
+    elYogaNodeMap.set(object, node);
 
     if (object instanceof RwdContainer) {
       const controller = new AbortController();
+      elAbortControllerMap.set(object, controller);
       object.orignalW = (vnodeProps as any).width;
       object.orignalH = (vnodeProps as any).height;
-      // console.log(vnodeProps?.layout);
-      // node.setJustifyContent(Justify.Center);
+      // node.setMaxHeight("100%");
+      // node.setMaxWidth("100%");
+      node.setHeight("100%");
+      node.setAspectRatio(
+        (vnodeProps as any).width / (vnodeProps as any).height,
+      );
+      // node.setJustifyContent(Justify.Center)
       // node.setAlignItems(Align.Center);
 
-      node.setHeight("100%");
-      node.setAspectRatio(0.5);
-      node.setMaxHeight('100%')
-      node.setMaxWidth('100%')
-      // node.setHeight(200);
-      // console.log(node.isDirty())
-
-      // node.calculateLayout(100, 300, Direction.LTR)
-      // console.log(node.isDirty())
-      // console.log(node.getComputedLayout())
-      // object.on(
-      //   "layout",
-      //   (event) => {
-      //     // console.log(event.computedLayout.width, (vnodeProps as any).width)
-      //     const _scaleX =
-      //       event.computedLayout.width / (vnodeProps as any).width;
-      //     // const _scaleY =
-      //     //   event.computedLayout.height / (vnodeProps as any).height;
-      //     // console.log({ _scaleX, _scaleY })
-
-      //     // const scaleEffect = _scaleX > 1 ? 1 : _scaleX;
-      //     setScaleEffect(object, _scaleX);
-      //   },
-      //   { signal: controller.signal },
-      // );
-      elAbortControllerMap.set(object, controller);
     }
+
+
     if (object instanceof Graphics) {
       (vnodeProps as any).draw(object);
     }
-    elYogaNodeMap.set(object, node);
+
     return object;
   }
   switch (toKebabCase(type)) {
@@ -117,8 +127,9 @@ export const createElement = (
         // console.log({ layout });
         // if (layout) application.stage.layout = layout;
         const onAppResize = vnodeProps["on:appResize"] as any;
-        node.setJustifyContent(Justify.Center);
-        node.setAlignItems(Align.Center);
+        const layout = vnodeProps?.layout;
+        if (layout)
+          setLayoutOnNode(layout, node);
 
         application.renderer.on("resize", (...args) => {
           const [width, height] = args;
