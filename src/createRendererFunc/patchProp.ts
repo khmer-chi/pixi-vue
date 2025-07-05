@@ -27,22 +27,22 @@ export const patchProp = async (
   elScaleEffectMap: WeakMap<RendererNode, number>,
   childrenElMap: WeakMap<RendererNode, RendererNode[]>,
 ) => {
-  const setScaleEffect = (object: Container, scaleEffect: number) => {
-    console.log({ scaleEffect });
-    elScaleEffectMap.set(object, scaleEffect);
-    const children = childrenElMap.get(object) ?? [];
-    for (let i = 0; i < children?.length; i++) {
-      const el = children[i];
+  // const setScaleEffect = (object: Container, scaleEffect: number) => {
+  //   console.log({ scaleEffect });
+  //   elScaleEffectMap.set(object, scaleEffect);
+  //   const children = childrenElMap.get(object) ?? [];
+  //   for (let i = 0; i < children?.length; i++) {
+  //     const el = children[i];
 
-      el.scale = (elScaleMap.get(el) ?? 1) * scaleEffect;
-      const background = el.background;
-      const computedLayout = el.layout.computedLayout;
-      console.log("------------------");
-      console.log(background.width, background.height);
-      console.log(computedLayout.width, computedLayout.height);
-      console.log("------------------");
-    }
-  };
+  //     el.scale = (elScaleMap.get(el) ?? 1) * scaleEffect;
+  //     const background = el.background;
+  //     const computedLayout = el.layout.computedLayout;
+  //     console.log("------------------");
+  //     console.log(background.width, background.height);
+  //     console.log(computedLayout.width, computedLayout.height);
+  //     console.log("------------------");
+  //   }
+  // };
   if (!prevValue) return;
   switch (key) {
     case "on:appResize": {
@@ -52,12 +52,12 @@ export const patchProp = async (
       }
       break;
     }
-    case "scaleEffect": {
-      if (el instanceof RwdContainer) {
-        setScaleEffect(el, nextValue);
-      }
-      break;
-    }
+    // case "scaleEffect": {
+    //   if (el instanceof RwdContainer) {
+    //     setScaleEffect(el, nextValue);
+    //   }
+    //   break;
+    // }
     case "texture": {
       if (el instanceof Sprite) {
         el.texture = Texture.from(nextValue);

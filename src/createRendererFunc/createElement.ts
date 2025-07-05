@@ -26,6 +26,8 @@ export const createElement = (
   elAbortControllerMap: WeakMap<RendererNode, AbortController>,
   elYogaNodeMap: WeakMap<RendererNode, Node>,
 ): RendererNode => {
+  const config = yoga.Config.create();
+  config.setUseWebDefaults(true);
   const map = new Map<string, unknown>([
     ["pixi-container", Container],
     ["pixi-sprite", Sprite],
@@ -43,15 +45,11 @@ export const createElement = (
 
   const classFunc = map.get(toKebabCase(type));
   if (classFunc) {
-    const node = yoga.Node.create();
+    const node = yoga.Node.create(config);
 
-    const layout = vnodeProps?.layout;
-
-    if (layout) setLayoutOnNode(layout, node);
     const object = new (classFunc as any)(vnodeProps as any);
 
     if (vnodeProps?.scale) elScaleMap.set(object, vnodeProps.scale);
-    elYogaNodeMap.set(object, node);
 
     if (object instanceof RwdContainer) {
       const controller = new AbortController();
@@ -64,10 +62,11 @@ export const createElement = (
       node.setAspectRatio(
         (vnodeProps as any).width / (vnodeProps as any).height,
       );
-      // node.setJustifyContent(Justify.Center)
-      // node.setAlignItems(Align.Center);
     }
+    const layout = vnodeProps?.layout;
 
+    if (layout) setLayoutOnNode(layout, node);
+    elYogaNodeMap.set(object, node);
     if (object instanceof Graphics) {
       (vnodeProps as any).draw(object);
     }
@@ -76,13 +75,8 @@ export const createElement = (
   }
   switch (toKebabCase(type)) {
     case "pixi-application": {
-      const config = yoga.Config.create();
-      config.setUseWebDefaults(true);
       const node = yoga.Node.create(config);
       if (vnodeProps) {
-        // const { layout } = vnodeProps;
-        // console.log({ layout });
-        // if (layout) application.stage.layout = layout;
         const onAppResize = vnodeProps["on:appResize"] as any;
         const layout = vnodeProps?.layout;
         if (layout) setLayoutOnNode(layout, node);

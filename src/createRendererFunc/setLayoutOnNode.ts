@@ -4,8 +4,12 @@ export const setLayoutOnNode = (
   layout: Record<string, unknown>,
   node: Node,
 ) => {
+  // node.markLayoutSeen();
+  // node.setAlignItems(Align.FlexEnd);
+  // node.setJustifyContent(Justify.Center);
+  // console.log(layout);
   if (layout.justifyContent) {
-    const map = new Map<string, Justify>([
+    const justifyMap = new Map<string, Justify>([
       ["flex-start", Justify.FlexStart],
       ["center", Justify.Center],
       ["flex-end", Justify.FlexEnd],
@@ -13,13 +17,14 @@ export const setLayoutOnNode = (
       ["space-around", Justify.SpaceAround],
       ["space-evenly", Justify.SpaceEvenly],
     ]);
-    const value = map.get(layout.justifyContent as string);
+    const value = justifyMap.get(layout.justifyContent as string);
     if (value) {
       node.setJustifyContent(value);
     }
   }
-  if (layout.alignItem) {
-    const map = new Map<string, Align>([
+
+  if (layout.alignItems) {
+    const alignMap = new Map<string, Align>([
       ["auto", Align.Auto],
       ["flex-start", Align.FlexStart],
       ["center", Align.Center],
@@ -30,13 +35,13 @@ export const setLayoutOnNode = (
       ["space-around", Align.SpaceAround],
       ["space-evenly", Align.SpaceEvenly],
     ]);
-    const value = map.get(layout.alignItem as string);
-    if (value) node.setAlignItems(value);
+    const value = alignMap.get(layout.alignItems as string);
+    if (value) {
+      node.setAlignItems(value);
+    }
   }
-  //TODO
-  node.setJustifyContent(Justify.Center);
-  node.setAlignItems(Align.Center);
-
-  node.setWidth(layout.width as number | "auto" | `${number}%` | undefined);
-  node.setHeight(layout.height as number | "auto" | `${number}%` | undefined);
+  if (layout.width)
+    node.setWidth(layout.width as number | "auto" | `${number}%` | undefined);
+  if (layout.height)
+    node.setHeight(layout.height as number | "auto" | `${number}%` | undefined);
 };

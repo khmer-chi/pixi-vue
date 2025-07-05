@@ -1,4 +1,4 @@
-import { Application, Container } from "pixi.js";
+import { Application, Container, Text } from "pixi.js";
 import type { RendererElement, RendererNode } from "vue";
 import { Direction, type Node } from "yoga-layout";
 
@@ -9,8 +9,8 @@ const insertNode = (
 ) => {
   const yogaNode = elYogaNodeMap.get(el);
   const parentYogaNode = elYogaNodeMap.get(parent);
-  if (!yogaNode) return
-  if (!parentYogaNode) return
+  if (!yogaNode) return;
+  if (!parentYogaNode) return;
 
   parentYogaNode.insertChild(yogaNode, parentYogaNode.getChildCount());
 };
@@ -34,26 +34,38 @@ export const insert = (
   } else if (el instanceof Container && parent instanceof Application) {
     parent.stage.addChild(el);
     insertNode(el, parent.stage, elYogaNodeMap);
-    const node = elYogaNodeMap.get(parent.stage)
+    const node = elYogaNodeMap.get(parent.stage);
     if (node) {
-      node.calculateLayout(undefined, undefined, Direction.LTR)
-      updateElByNode(parent.stage, elYogaNodeMap)
-      console.log(node.getComputedLayout(), node.getChild(0).getComputedLayout(), node.getChild(0).getChild(0).getComputedLayout())
+      node.calculateLayout(undefined, undefined, Direction.LTR);
+      updateElByNode(parent.stage, elYogaNodeMap);
+      // console.log(
+      //   node.getComputedLayout(),
+      //   node.getChild(0).getComputedLayout(),
+      //   node.getChild(0).getChild(0).getComputedLayout(),
+      // );
     }
   }
 };
-const updateElByNode = (el: RendererElement, elYogaNodeMap: WeakMap<RendererNode, Node>) => {
+const updateElByNode = (
+  el: RendererElement,
+  elYogaNodeMap: WeakMap<RendererNode, Node>,
+) => {
   const node = elYogaNodeMap.get(el) as Node;
 
-  const computedLayout = node.getComputedLayout()
-  const _el = el as Container
-  _el.x = computedLayout.left
-  _el.y = computedLayout.top
-  console.log('--------------');
-  console.log(el, computedLayout)
-
-  const children = el.children
+  const computedLayout = node.getComputedLayout();
+  // console.log(el, node.getJustifyContent());
+  const _el = el as Container;
+  _el.x = computedLayout.left;
+  _el.y = computedLayout.top;
+  // _el.width = 100;
+  // _el.width = computedLayout.width;
+  // _el.height = computedLayout.height;
+  console.log("--------------");
+  // console.log(el, el.width, el.height);
+  console.log(el, computedLayout.width, computedLayout.height);
+  // console.log("--------------");
+  const children = el.children;
   for (let i = 0; i < children.length; i++) {
     updateElByNode(children[i], elYogaNodeMap);
   }
-}
+};
