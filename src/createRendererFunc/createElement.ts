@@ -12,9 +12,11 @@ import {
   TilingSprite,
 } from "pixi.js";
 import type { RendererNode } from "vue";
-import type { Node, Yoga } from "yoga-layout/load";
+import type { Yoga } from "yoga-layout/load";
 import { RwdContainer } from "#/createRendererFunc/RwdContainer";
 import { setLayoutOnNode } from "#/createRendererFunc/setLayoutOnNode";
+import { updateElByNode } from "#/createRendererFunc/updateElByNode";
+import type { WeakMapObject } from "#/schema/WeakMapObject";
 import { toKebabCase } from "#/toKebabCase";
 
 export const createElement = (
@@ -22,10 +24,15 @@ export const createElement = (
   vnodeProps: any,
   yoga: Yoga,
   application: Application,
-  elScaleMap: WeakMap<RendererNode, number>,
-  elAbortControllerMap: WeakMap<RendererNode, AbortController>,
-  elYogaNodeMap: WeakMap<RendererNode, Node>,
+  weakMapObject: WeakMapObject,
 ): RendererNode => {
+  const {
+    elScaleMap,
+    elAbortControllerMap,
+    elYogaNodeMap,
+    elBgMap,
+    elLayoutDataMap,
+  } = weakMapObject;
   const config = yoga.Config.create();
   config.setUseWebDefaults(true);
   const map = new Map<string, unknown>([
@@ -52,8 +59,7 @@ export const createElement = (
     if (vnodeProps?.scale) elScaleMap.set(object, vnodeProps.scale);
 
     if (object instanceof RwdContainer) {
-      const controller = new AbortController();
-      elAbortControllerMap.set(object, controller);
+      elAbortControllerMap.set(object, new AbortController());
       object.orignalW = (vnodeProps as any).width;
       object.orignalH = (vnodeProps as any).height;
       node.setMaxHeight("100%");
@@ -62,7 +68,12 @@ export const createElement = (
       node.setAspectRatio(
         (vnodeProps as any).width / (vnodeProps as any).height,
       );
+      elLayoutDataMap.set(object, vnodeProps?.layout)
     }
+
+    // if (vnodeProps?.layout.backgroundColor) {
+    //   elBgMap.set(object, new Graphics())
+    // }
     const layout = vnodeProps?.layout;
 
     if (layout) setLayoutOnNode(layout, node);
@@ -76,6 +87,7 @@ export const createElement = (
   switch (toKebabCase(type)) {
     case "pixi-application": {
       const node = yoga.Node.create(config);
+      elYogaNodeMap.set(application.stage, node);
       if (vnodeProps) {
         const onAppResize = vnodeProps["on:appResize"] as any;
         const layout = vnodeProps?.layout;
@@ -83,17 +95,15 @@ export const createElement = (
 
         application.renderer.on("resize", (...args) => {
           const [width, height] = args;
-          // console.log({ width, height })
           node.setWidth(width);
           node.setHeight(height);
-          // node.calculateLayout(width, height, Direction.LTR);
-          // console.log(node.getComputedLayout());
+          updateElByNode(application.stage, weakMapObject);
+
           onAppResize?.(...args);
         });
         application.resize();
       }
 
-      elYogaNodeMap.set(application.stage, node);
       return application;
     }
     default: {

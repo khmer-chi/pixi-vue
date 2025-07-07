@@ -6,8 +6,12 @@ import {
   Text,
   Texture,
 } from "pixi.js";
-import type { RendererElement, RendererNode } from "vue";
+import type { RendererElement } from "vue";
+import type { Node } from "yoga-layout";
 import { RwdContainer } from "#/createRendererFunc/RwdContainer";
+import { setLayoutOnNode } from "#/createRendererFunc/setLayoutOnNode";
+import { updateElByNode } from "#/createRendererFunc/updateElByNode";
+import type { WeakMapObject } from "#/schema/WeakMapObject";
 
 const checkCommon = <T>(el: T): Container | false => {
   if (el instanceof Container) return el;
@@ -22,11 +26,17 @@ export const patchProp = async (
   key: string,
   prevValue: any,
   nextValue: any,
-  elScaleMap: WeakMap<RendererNode, number>,
-  parentElMap: WeakMap<RendererNode, RendererNode>,
-  elScaleEffectMap: WeakMap<RendererNode, number>,
-  childrenElMap: WeakMap<RendererNode, RendererNode[]>,
+  weakMapObject: WeakMapObject,
 ) => {
+  const {
+    elScaleMap,
+    parentElMap,
+    elScaleEffectMap,
+    childrenElMap,
+    elYogaNodeMap,
+    elLayoutDataMap,
+    elBgMap,
+  } = weakMapObject;
   // const setScaleEffect = (object: Container, scaleEffect: number) => {
   //   console.log({ scaleEffect });
   //   elScaleEffectMap.set(object, scaleEffect);
@@ -65,31 +75,30 @@ export const patchProp = async (
       break;
     }
     case "text": {
-      // if (el instanceof LayoutText) {
-      //   el.slot.text = nextValue;
-      // }
       if (el instanceof Text) {
         el.text = nextValue;
       }
-
       break;
     }
     case "style": {
-      // if (el instanceof LayoutText) {
-      //   el.slot.style = nextValue;
-      // }
       if (el instanceof Text) {
         el[key] = nextValue;
       }
       break;
     }
 
-    // case "layout": {
-    //   const newEl = checkCommon(el);
-    //   if (!newEl) return;
-    //   newEl[key] = nextValue;
-    //   break;
-    // }
+    case "layout": {
+      const newEl = checkCommon(el);
+      if (!newEl) return;
+      const node = elYogaNodeMap.get(newEl) as Node;
+      elLayoutDataMap.set(newEl, nextValue)
+      // if (nextValue.backgroundColor) {
+      //   elBgMap.set(newEl, new Graphics())
+      // }
+      setLayoutOnNode(nextValue, node);
+      updateElByNode(newEl, weakMapObject);
+      break;
+    }
     case "width":
     case "height":
     case "x":
@@ -105,9 +114,6 @@ export const patchProp = async (
         } else if (key == "height") {
           newEl.orignalH = nextValue;
         }
-        // newEl.layout = {
-        //   aspectRatio: newEl.orignalW / newEl.orignalH
-        // }
         break;
       }
 

@@ -21,17 +21,41 @@
         backgroundColor: '#1099bb',
       }"
     >
-      <PixiText
+      <PixiGraphics
+        :layout="{ width: 437, height: 437 }"
+        :draw="
+          (graphics) => {
+            graphics.clear();
+            graphics.rect(0, 0, 437, 437).fill({ color: 0x1099bb });
+          }
+        "
+      />
+      <!-- <PixiText
         text="12123243"
         :layout="{
           width: 100,
           height: 100,
+          justifyContent: 'flex-start',
+          alignItems: 'center',
           backgroundColor: '#000fff',
         }"
         :style="{
           fill: '#fff000',
         }"
-      />
+      /> -->
+      <!-- <PixiText
+        text="12123243"
+        :layout="{
+          width: 100,
+          height: 100,
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          backgroundColor: '#000fff',
+        }"
+        :style="{
+          fill: '#fff000',
+        }"
+      /> -->
 
       <!-- <PixiLayoutText
         text="12123243"
@@ -45,12 +69,7 @@
         :draw="
           (graphics) => {
             graphics.clear();
-            graphics
-              .moveTo(0, 0)
-              .lineTo(100, 100)
-              .arc(100, 100, 100, 0, Math.PI)
-              .closePath()
-              .fill({ color: 0x00ff00, alpha: 0.5 }); // Fill the shape
+            graphics.rect(0, 0, 200, 200).fill({ color: 0xff0000 });
           }
         "
       /> -->

@@ -1,47 +1,21 @@
-import { Align, Justify, type Node } from "yoga-layout";
+import type { Node } from "yoga-layout";
+import { alignItemsStringToNumber } from "#/schema/AlignSchema";
+import { justifyStringToNumber } from "#/schema/justifyContentSchema";
+import type { Layout } from "#/schema/Layout";
 
-export const setLayoutOnNode = (
-  layout: Record<string, unknown>,
-  node: Node,
-) => {
-  // node.markLayoutSeen();
-  // node.setAlignItems(Align.FlexEnd);
-  // node.setJustifyContent(Justify.Center);
-  // console.log(layout);
-  if (layout.justifyContent) {
-    const justifyMap = new Map<string, Justify>([
-      ["flex-start", Justify.FlexStart],
-      ["center", Justify.Center],
-      ["flex-end", Justify.FlexEnd],
-      ["space-between", Justify.SpaceBetween],
-      ["space-around", Justify.SpaceAround],
-      ["space-evenly", Justify.SpaceEvenly],
-    ]);
-    const value = justifyMap.get(layout.justifyContent as string);
-    if (value) {
-      node.setJustifyContent(value);
-    }
-  }
+export const setLayoutOnNode = (layout: Layout, node: Node) => {
+  if (layout.justifyContent)
+    node.setJustifyContent(justifyStringToNumber(layout.justifyContent));
 
-  if (layout.alignItems) {
-    const alignMap = new Map<string, Align>([
-      ["auto", Align.Auto],
-      ["flex-start", Align.FlexStart],
-      ["center", Align.Center],
-      ["flex-end", Align.FlexEnd],
-      ["stretch", Align.Stretch],
-      ["baseline", Align.Baseline],
-      ["space-between", Align.SpaceBetween],
-      ["space-around", Align.SpaceAround],
-      ["space-evenly", Align.SpaceEvenly],
-    ]);
-    const value = alignMap.get(layout.alignItems as string);
-    if (value) {
-      node.setAlignItems(value);
-    }
-  }
-  if (layout.width)
-    node.setWidth(layout.width as number | "auto" | `${number}%` | undefined);
-  if (layout.height)
-    node.setHeight(layout.height as number | "auto" | `${number}%` | undefined);
+  if (layout.alignItems)
+    node.setAlignItems(alignItemsStringToNumber(layout.alignItems));
+
+  if (layout.alignContent)
+    node.setAlignContent(alignItemsStringToNumber(layout.alignContent))
+
+  if (layout.alignSelf)
+    node.setAlignSelf(alignItemsStringToNumber(layout.alignSelf))
+
+  if (layout.width) node.setWidth(layout.width);
+  if (layout.height) node.setHeight(layout.height);
 };
