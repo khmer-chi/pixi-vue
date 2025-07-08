@@ -26,22 +26,18 @@ export const insert = (
     elYogaNodeMap,
     childrenElMap,
     parentElMap,
-    // elBgMap,
   } = weakMapObject;
   if (!el) return;
   if (parent instanceof Container && el instanceof Container) {
     if (!childrenElMap.has(parent)) childrenElMap.set(parent, []);
     (childrenElMap.get(parent) ?? []).push(el);
     parentElMap.set(el, parent);
-    // const graphics = new Graphics();
-    // elBgMap.set(el, graphics)
 
     parent.addChild(el);
     insertNode(el, parent, elYogaNodeMap);
   } else if (el instanceof Application && parent instanceof HTMLElement) {
     parent.appendChild(el.canvas);
   } else if (el instanceof Container && parent instanceof Application) {
-    // elBgMap.set(el, new Graphics())
     parent.stage.addChild(el);
     insertNode(el, parent.stage, elYogaNodeMap);
     updateElByNode(parent.stage, weakMapObject);

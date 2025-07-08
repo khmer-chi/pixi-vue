@@ -30,7 +30,6 @@ export const createElement = (
     elScaleMap,
     elAbortControllerMap,
     elYogaNodeMap,
-    elBgMap,
     elLayoutDataMap,
   } = weakMapObject;
   const config = yoga.Config.create();
@@ -49,8 +48,8 @@ export const createElement = (
 
     ["pixi-rwd-container", RwdContainer],
   ]);
-
-  const classFunc = map.get(toKebabCase(type));
+  const classType = toKebabCase(type)
+  const classFunc = map.get(classType);
   if (classFunc) {
     const node = yoga.Node.create(config);
 
@@ -62,18 +61,14 @@ export const createElement = (
       elAbortControllerMap.set(object, new AbortController());
       object.orignalW = (vnodeProps as any).width;
       object.orignalH = (vnodeProps as any).height;
-      node.setMaxHeight("100%");
-      node.setMaxWidth("100%");
+
       node.setHeight("100%");
       node.setAspectRatio(
         (vnodeProps as any).width / (vnodeProps as any).height,
       );
-      elLayoutDataMap.set(object, vnodeProps?.layout)
     }
+    elLayoutDataMap.set(object, vnodeProps?.layout)
 
-    // if (vnodeProps?.layout.backgroundColor) {
-    //   elBgMap.set(object, new Graphics())
-    // }
     const layout = vnodeProps?.layout;
 
     if (layout) setLayoutOnNode(layout, node);

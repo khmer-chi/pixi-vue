@@ -28,6 +28,7 @@ export const patchProp = async (
   nextValue: any,
   weakMapObject: WeakMapObject,
 ) => {
+  console.log(el, key)
   const {
     elScaleMap,
     parentElMap,
@@ -35,7 +36,6 @@ export const patchProp = async (
     childrenElMap,
     elYogaNodeMap,
     elLayoutDataMap,
-    elBgMap,
   } = weakMapObject;
   // const setScaleEffect = (object: Container, scaleEffect: number) => {
   //   console.log({ scaleEffect });
@@ -75,6 +75,11 @@ export const patchProp = async (
       break;
     }
     case "text": {
+      // if (el instanceof Container) {
+      //   if (el.children[0] instanceof Text) {
+      //     el.children[0].text = nextValue;
+      //   }
+      // }
       if (el instanceof Text) {
         el.text = nextValue;
       }
@@ -92,9 +97,7 @@ export const patchProp = async (
       if (!newEl) return;
       const node = elYogaNodeMap.get(newEl) as Node;
       elLayoutDataMap.set(newEl, nextValue)
-      // if (nextValue.backgroundColor) {
-      //   elBgMap.set(newEl, new Graphics())
-      // }
+
       setLayoutOnNode(nextValue, node);
       updateElByNode(newEl, weakMapObject);
       break;

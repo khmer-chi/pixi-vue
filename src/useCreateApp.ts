@@ -47,27 +47,11 @@ export const useCreateApp = (application: Application, yoga: Yoga) => {
       remove(el, elYogaNodeMap, elAbortControllerMap);
     },
 
-    createText() {
-      return null;
-    },
-
-    setElementText() {
-      return null;
-    },
-
-    parentNode(node) {
-      if (node) return node.parent;
-    },
-
-    nextSibling(_node) {
-      return null;
-    },
-
-    createComment: () => {
-      return null;
-    },
-    setText: () => {
-      return null;
-    },
+    createText() { return null; },
+    setElementText() { return null; },
+    parentNode(node) { if (node) return node.parent; },
+    nextSibling(_node) { return null; },
+    createComment: () => { return null; },
+    setText: () => { return null; },
   });
 };

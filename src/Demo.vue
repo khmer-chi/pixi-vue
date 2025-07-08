@@ -21,7 +21,7 @@
         backgroundColor: '#1099bb',
       }"
     >
-      <PixiGraphics
+      <!-- <PixiGraphics
         :layout="{ width: 437, height: 437 }"
         :draw="
           (graphics) => {
@@ -29,20 +29,20 @@
             graphics.rect(0, 0, 437, 437).fill({ color: 0x1099bb });
           }
         "
-      />
-      <!-- <PixiText
-        text="12123243"
+      /> -->
+      <PixiText
+        text="4354"
         :layout="{
           width: 100,
           height: 100,
           justifyContent: 'flex-start',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           backgroundColor: '#000fff',
         }"
         :style="{
           fill: '#fff000',
         }"
-      /> -->
+      />
       <!-- <PixiText
         text="12123243"
         :layout="{

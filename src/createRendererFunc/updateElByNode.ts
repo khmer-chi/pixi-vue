@@ -1,4 +1,4 @@
-import { type Container, Graphics } from "pixi.js";
+import { type Container, Graphics, Text } from "pixi.js";
 import type { RendererElement } from "vue";
 import { Direction } from "yoga-layout";
 import type { WeakMapObject } from "#/schema/WeakMapObject";
@@ -25,17 +25,24 @@ export const updateElByNode = (
   if (layout) {
     if (layout.backgroundColor) {
       if (!elBgMap.has(el)) {
-        elBgMap.set(el, new Graphics())
+        elBgMap.set(el, new Graphics());
       }
-      const graphics = elBgMap.get(el) as Graphics
-      graphics.clear()
-      graphics.rect(0, 0, computedLayout.width, computedLayout.height)
-      graphics.fill({ color: layout.backgroundColor })
-      el.addChildAt(graphics, el.children.length);
-      console.log(el, computedLayout.width, computedLayout.height);
+      if (!(el instanceof Text)) {
+        const graphics = elBgMap.get(el) as Graphics;
+        graphics.clear();
+        graphics.rect(0, 0, computedLayout.width, computedLayout.height);
+        graphics.fill({ color: layout.backgroundColor });
+        // console.log(el)
+        el.addChildAt(graphics, 0);
+        console.log(
+          el,
+          el.children,
+          computedLayout.width,
+          computedLayout.height,
+        );
+      }
     }
   }
-
 
   const children = el.children;
   for (let i = 0; i < children.length; i++) {
