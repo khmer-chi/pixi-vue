@@ -27,15 +27,13 @@ import type {
 } from "pixi.js";
 import type { DefineComponent, UnwrapRef } from "vue";
 
-type ConstructParam<T extends abstract new (...args: any) => any> =
-  ConstructorParameters<T>[0];
-
 type VueDefineProps<
   T extends abstract new (
     ...args: any
   ) => any,
   U = unknown,
-> = UnwrapRef<DefineComponent<ConstructParam<T> & U>>;
+> = UnwrapRef<DefineComponent<Exclude<ConstructorParameters<T>[0], undefined> & U>>;
+
 type layoutWithoutBgColor<
   T extends abstract new (
     ...args: any
@@ -43,9 +41,13 @@ type layoutWithoutBgColor<
   U = unknown,
 > = UnwrapRef<
   DefineComponent<
-    Omit<ConstructParam<T>, "layout"> & {
+    Omit<
+      Exclude<ConstructorParameters<T>[0], undefined>
+      , 'layout'>
+    & {
       layout?: Omit<LayoutOptions, "target" | "backgroundColor">;
-    } & U
+    }
+    & U
   >
 >;
 
@@ -65,8 +67,8 @@ export interface CustomVueComponent {
   readonly PixiApplication: DefineComponent<{
     width: number;
     height: number;
-    layout: Omit<LayoutOptions, "target">;
-    onResize: (
+    layout?: Omit<LayoutOptions, "target">;
+    onResize?: (
       ...payload: Parameters<Parameters<Renderer["on"]>[1]>
     ) => void;
   }>;
