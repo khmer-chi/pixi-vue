@@ -82,16 +82,28 @@ export const createElement = (
   const newType = toCamelCase(type);
   switch (newType) {
     case "PixiApplication": {
+      application.stage.removeChildren();
       application.stage.layout = {
         justifyContent: "center",
         alignItems: "center",
         transformOrigin: "left top",
       };
       const rwdContainer = new LayoutContainer();
-      application.stage.removeChildren();
       application.stage.addChild(rwdContainer);
+      rwdContainer.layout = layout;
       rwdContainer.layout = { height: "100%" };
       const aspectRatio = computed(() => rwdWidth.value / rwdHeight.value);
+      rwdWidth.value = propsWidth;
+      rwdHeight.value = propsHeight;
+      const resizeWH = ref({ width: 0, height: 0 });
+
+      application.renderer.on("resize", (...args) => {
+        const [width, height] = args;
+        resizeWH.value = { width, height };
+        vnodeProps?.onResize(...args);
+      });
+      application.resize();
+
       watch(
         aspectRatio,
         (aspectRatio) => {
@@ -99,16 +111,6 @@ export const createElement = (
         },
         { immediate: true },
       );
-      rwdContainer.layout = layout;
-      rwdWidth.value = propsWidth;
-      rwdHeight.value = propsHeight;
-      const resizeWH = ref({ width: 0, height: 0 });
-      application.renderer.on("resize", (...args) => {
-        const [width, height] = args;
-        resizeWH.value = { width, height };
-
-        vnodeProps?.onResize(...args);
-      });
       watch(
         [rwdWidth, rwdHeight, resizeWH],
         ([rwdWidth, rwdHeight, { width, height }]) => {
@@ -123,7 +125,7 @@ export const createElement = (
         },
         { immediate: true },
       );
-      application.resize();
+
       return application;
     }
     default: {
