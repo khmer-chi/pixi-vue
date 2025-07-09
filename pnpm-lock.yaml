@@ -10,10 +10,10 @@ importers:
     dependencies:
       '@pixi/layout':
         specifier: ^3.0.2
-        version: 3.0.2(@types/react@19.1.8)(pixi.js@8.10.2)(react@19.1.0)(yoga-layout@3.2.1)
+        version: 3.0.2(@types/react@19.1.8)(pixi.js@8.11.0)(react@19.1.0)(yoga-layout@3.2.1)
       pixi.js:
-        specifier: 8.10.2
-        version: 8.10.2
+        specifier: 8.11.0
+        version: 8.11.0
       vue:
         specifier: ^3.5.17
         version: 3.5.17(typescript@5.8.3)
@@ -737,8 +737,8 @@ packages:
     resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
     engines: {node: '>=12'}
 
-  pixi.js@8.10.2:
-    resolution: {integrity: sha512-utRKxzTwNsIhaxOikxIBxKPfxuOyVkPvdYipY23ZEyWSYhONosrQlcB9nymeIcbsrsuSdwExX0eTnHTDjTN3UQ==}
+  pixi.js@8.11.0:
+    resolution: {integrity: sha512-dyuThzncsgEgJZnvd/A/5x6IkUERbK+phXqUQrI+0C6WE+8xqGH5VChRTLecemhgZF0kQ+gZOM3tJTX9937xpg==}
 
   pkg-types@1.3.1:
     resolution: {integrity: sha512-/Jm5M4RvtBFVkKWRu2BLUTNP8/M2a+UwuAX+ae4770q1qVGtfjG+WTCupoZixokjmHiry8uI+dlY8KXYV5HVVQ==}
@@ -1082,20 +1082,20 @@ snapshots:
 
   '@pixi/colord@2.9.6': {}
 
-  '@pixi/layout@3.0.2(@types/react@19.1.8)(pixi.js@8.10.2)(react@19.1.0)(yoga-layout@3.2.1)':
+  '@pixi/layout@3.0.2(@types/react@19.1.8)(pixi.js@8.11.0)(react@19.1.0)(yoga-layout@3.2.1)':
     dependencies:
-      pixi.js: 8.10.2
+      pixi.js: 8.11.0
       yoga-layout: 3.2.1
     optionalDependencies:
-      '@pixi/react': 8.0.2(@types/react@19.1.8)(pixi.js@8.10.2)(react@19.1.0)
+      '@pixi/react': 8.0.2(@types/react@19.1.8)(pixi.js@8.11.0)(react@19.1.0)
     transitivePeerDependencies:
       - '@types/react'
       - react
 
-  '@pixi/react@8.0.2(@types/react@19.1.8)(pixi.js@8.10.2)(react@19.1.0)':
+  '@pixi/react@8.0.2(@types/react@19.1.8)(pixi.js@8.11.0)(react@19.1.0)':
     dependencies:
       its-fine: 2.0.0(@types/react@19.1.8)(react@19.1.0)
-      pixi.js: 8.10.2
+      pixi.js: 8.11.0
       react: 19.1.0
       react-reconciler: 0.31.0(react@19.1.0)
     transitivePeerDependencies:
@@ -1543,7 +1543,7 @@ snapshots:
 
   picomatch@4.0.2: {}
 
-  pixi.js@8.10.2:
+  pixi.js@8.11.0:
     dependencies:
       '@pixi/colord': 2.9.6
       '@types/css-font-loading-module': 0.0.12

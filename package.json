@@ -27,7 +27,7 @@
   "packageManager": "pnpm@10.12.4",
   "dependencies": {
     "@pixi/layout": "^3.0.2",
-    "pixi.js": "8.10.2",
+    "pixi.js": "8.11.0",
     "vue": "^3.5.17",
     "zod": "^3.25.76"
   },
