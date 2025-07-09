@@ -18,7 +18,7 @@
     <!-- <LayoutContainer
       :layout="{ width: 200, height: 200, backgroundColor: '#000fff' }"
     ></LayoutContainer> -->
-    <LayoutText
+    <PixiLayoutText
       text="12123243"
       :layout="{ width: 250, height: 250, backgroundColor: '#000fff' }"
       :style="{
@@ -26,7 +26,7 @@
       }"
     />
 
-    <LayoutText
+    <PixiLayoutText
       text="12123243"
       :layout="{ width: 250, height: 250, backgroundColor: '#000fff' }"
       :style="{

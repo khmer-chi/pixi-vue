@@ -1,8 +1,7 @@
-import { toKebabCase } from "#/toKebabCase";
+import { toCamelCase } from "#/utils/toCamelCase";
 
 export const isPixiVueElement = (tag: string) => {
-  const name = toKebabCase(tag);
-  if (name.startsWith("pixi-")) return true;
-  if (name.startsWith("layout-")) return true;
+  const name = toCamelCase(tag);
+  if (name.startsWith("Pixi")) return true;
   return false;
 }

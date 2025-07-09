@@ -58,7 +58,7 @@ createPixiApp(App, document.getElementById("app")!);
       }
     "
   >
-    <LayoutText
+    <PixiLayoutText
       text="12123243"
       :layout="{ width: 200, height: 100, backgroundColor: '#000fff' }"
       :style="{
