@@ -29,6 +29,7 @@ setTimeout(() => {
     @resize="resize"
   >
     <PixiLayoutText
+      :rotation="(90 * Math.PI) / 180"
       :text
       :layout="{ width: 250, height: 250, backgroundColor: '#000fff' }"
       :style="{

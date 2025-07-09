@@ -10,6 +10,7 @@ import {
   LayoutTilingSprite,
   LayoutView,
 } from "@pixi/layout/components";
+import debounce from "lodash.debounce";
 import {
   AnimatedSprite,
   type Application,
@@ -35,32 +36,32 @@ import {
 } from "vue";
 import { toCamelCase } from "#/utils/toCamelCase";
 
-const getClass = (type: string) => {
-  const componentMap = new Map<string, unknown>([
-    ["PixiLayoutView", LayoutView],
-    ["PixiLayoutContainer", LayoutContainer],
-    ["PixiLayoutText", LayoutText],
-    ["PixiLayoutHTMLText", LayoutHTMLText],
-    ["PixiLayoutSprite", LayoutSprite],
-    ["PixiLayoutBitmapText", LayoutBitmapText],
-    ["PixiLayoutText", LayoutText],
-    ["PixiLayoutAnimatedSprite", LayoutAnimatedSprite],
-    ["PixiLayoutTilingSprite", LayoutTilingSprite],
-    ["PixiLayoutNineSliceSprite", LayoutNineSliceSprite],
-    ["PixiLayoutPixiMesh", LayoutMesh],
+const componentMap = new Map<string, unknown>([
+  ["PixiLayoutView", LayoutView],
+  ["PixiLayoutContainer", LayoutContainer],
+  ["PixiLayoutText", LayoutText],
+  ["PixiLayoutHTMLText", LayoutHTMLText],
+  ["PixiLayoutSprite", LayoutSprite],
+  ["PixiLayoutBitmapText", LayoutBitmapText],
+  ["PixiLayoutText", LayoutText],
+  ["PixiLayoutAnimatedSprite", LayoutAnimatedSprite],
+  ["PixiLayoutTilingSprite", LayoutTilingSprite],
+  ["PixiLayoutNineSliceSprite", LayoutNineSliceSprite],
+  ["PixiLayoutPixiMesh", LayoutMesh],
 
-    ["PixiContainer", Container],
-    ["PixiSprite", Sprite],
-    ["PixiText", Text],
-    ["PixiTexture", Texture],
-    ["PixiGraphics", Graphics],
-    ["PixiBitmapText", BitmapText],
-    ["PixiHTMLText", HTMLText],
-    ["PixiAnimatedSprite", AnimatedSprite],
-    ["PixiTilingSprite", TilingSprite],
-    ["PixiNineSliceSprite", NineSliceSprite],
-    ["PixiMesh", Mesh],
-  ]);
+  ["PixiContainer", Container],
+  ["PixiSprite", Sprite],
+  ["PixiText", Text],
+  ["PixiTexture", Texture],
+  ["PixiGraphics", Graphics],
+  ["PixiBitmapText", BitmapText],
+  ["PixiHTMLText", HTMLText],
+  ["PixiAnimatedSprite", AnimatedSprite],
+  ["PixiTilingSprite", TilingSprite],
+  ["PixiNineSliceSprite", NineSliceSprite],
+  ["PixiMesh", Mesh],
+]);
+const getClass = (type: string) => {
   const classFunc = componentMap.get(type);
   if (!classFunc) throw new Error(`Unknown element type: ${type}`);
   return classFunc;
@@ -100,9 +101,10 @@ export const createElement = (
       application.renderer.on("resize", (...args) => {
         const [width, height] = args;
         resizeWH.value = { width, height };
-        vnodeProps?.onResize(...args);
+        vnodeProps?.onResize?.(...args);
       });
       application.resize();
+
 
       watch(
         aspectRatio,
@@ -111,9 +113,14 @@ export const createElement = (
         },
         { immediate: true },
       );
-      watch(
-        [rwdWidth, rwdHeight, resizeWH],
-        ([rwdWidth, rwdHeight, { width, height }]) => {
+      // 將 resize 事件的 watch 包裝 debounce，減少高頻觸發
+      const updateStageLayout = debounce(
+        (
+          rwdWidth: number,
+          rwdHeight: number,
+          width: number,
+          height: number,
+        ) => {
           const scaleX = width / rwdWidth;
           const scaleY = height / rwdHeight;
           const scale = scaleX > scaleY ? scaleY : scaleX;
@@ -122,6 +129,14 @@ export const createElement = (
             height: height / scale,
           };
           application.stage.scale = scale;
+        },
+        16, // 16ms 約等於 60fps
+      );
+
+      watch(
+        [rwdWidth, rwdHeight, resizeWH],
+        ([rwdWidth, rwdHeight, { width, height }]) => {
+          updateStageLayout(rwdWidth, rwdHeight, width, height);
         },
         { immediate: true },
       );

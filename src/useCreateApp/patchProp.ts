@@ -29,7 +29,7 @@ export const patchProp = (
   }
 
 
-  if (!prevValue) return;
+  if (prevValue === undefined) return;
   switch (key) {
     case "onResize": {
       if (el instanceof Application) {
@@ -71,6 +71,9 @@ export const patchProp = (
       el[key] = nextValue;
       break;
     }
+    case "origin":
+
+    case "pivot":
     case "width":
     case "height":
     case "x":
@@ -85,7 +88,6 @@ export const patchProp = (
           rwdHeight.value = nextValue
         break;
       }
-
       el[key] = nextValue;
       break;
     }

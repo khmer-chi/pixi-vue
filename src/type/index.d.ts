@@ -44,23 +44,23 @@ type layoutWithoutBgColor<
 > = UnwrapRef<
   DefineComponent<
     Omit<ConstructParam<T>, "layout"> & {
-      layout: Omit<LayoutOptions, "target" | "backgroundColor">;
+      layout?: Omit<LayoutOptions, "target" | "backgroundColor">;
     } & U
   >
 >;
 
 export interface CustomVueComponent {
-  readonly LayoutContainer: VueDefineProps<typeof LayoutContainer>;
-  readonly LayoutSprite: VueDefineProps<typeof LayoutSprite>;
-  readonly LayoutText: VueDefineProps<typeof LayoutText>;
-  readonly LayoutView: VueDefineProps<typeof LayoutView>;
-  readonly LayoutBitmapText: VueDefineProps<typeof LayoutBitmapText>;
-  readonly LayoutHtmlText: VueDefineProps<typeof LayoutHTMLText>;
-  readonly LayoutGraphics: VueDefineProps<typeof LayoutGraphics>;
-  readonly LayoutAnimatedSprite: VueDefineProps<typeof LayoutAnimatedSprite>;
-  readonly LayoutTilingSprite: VueDefineProps<typeof LayoutTilingSprite>;
-  readonly LayoutNineSliceSprite: VueDefineProps<typeof LayoutNineSliceSprite>;
-  readonly LayoutMesh: VueDefineProps<typeof LayoutMesh>;
+  readonly PixiLayoutContainer: VueDefineProps<typeof LayoutContainer>;
+  readonly PixiLayoutSprite: VueDefineProps<typeof LayoutSprite>;
+  readonly PixiLayoutText: VueDefineProps<typeof LayoutText>;
+  readonly PixiLayoutView: VueDefineProps<typeof LayoutView>;
+  readonly PixiLayoutBitmapText: VueDefineProps<typeof LayoutBitmapText>;
+  readonly PixiLayoutHtmlText: VueDefineProps<typeof LayoutHTMLText>;
+  readonly PixiLayoutGraphics: VueDefineProps<typeof LayoutGraphics>;
+  readonly PixiLayoutAnimatedSprite: VueDefineProps<typeof LayoutAnimatedSprite>;
+  readonly PixiLayoutTilingSprite: VueDefineProps<typeof LayoutTilingSprite>;
+  readonly PixiLayoutNineSliceSprite: VueDefineProps<typeof LayoutNineSliceSprite>;
+  readonly PixiLayoutMesh: VueDefineProps<typeof LayoutMesh>;
 
   readonly PixiApplication: DefineComponent<{
     width: number;
