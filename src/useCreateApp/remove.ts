@@ -8,8 +8,6 @@ export const remove = (payload: Parameters<RendererOptions<RendererNode | null, 
 
   if (parent instanceof Container && el instanceof Container) {
     parent.removeChild(el);
-  } else if (el instanceof Application && parent instanceof HTMLElement) {
-    parent.removeChild(el.canvas);
   } else if (el instanceof Container && parent instanceof Application) {
     parent.stage.removeChild(el);
   }

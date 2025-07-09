@@ -7,15 +7,31 @@ import {
   Text,
   Texture,
 } from "pixi.js";
-import type { RendererElement, RendererNode, RendererOptions } from "vue";
+import type { Ref, RendererElement, RendererNode, RendererOptions } from "vue";
 
 export const patchProp = (
-  payload: Parameters<RendererOptions<RendererNode | null, RendererElement>["patchProp"]>,
+  payload: Parameters<
+    RendererOptions<RendererNode | null, RendererElement>["patchProp"]
+  >,
+  rwdWidth: Ref<number>,
+  rwdHeight: Ref<number>,
 ) => {
   const [el, key, prevValue, nextValue] = payload;
+  if (!(el instanceof Application)) {
+    if (key.startsWith("on")) {
+      const eventName = key.replace(/^on/, "").toLowerCase();
+      if (prevValue) {
+        el.off(eventName, prevValue);
+      }
+      el.on(eventName, nextValue);
+      return;
+    }
+  }
+
+
   if (!prevValue) return;
   switch (key) {
-    case "on:appResize": {
+    case "onResize": {
       if (el instanceof Application) {
         el.renderer.on("resize", nextValue);
         el.renderer.off("resize", prevValue);
@@ -62,6 +78,14 @@ export const patchProp = (
     case "rotation":
     case "scale":
     case "alpha": {
+      if (el instanceof Application) {
+        if (key == "width")
+          rwdWidth.value = nextValue
+        if (key == "height")
+          rwdHeight.value = nextValue
+        break;
+      }
+
       el[key] = nextValue;
       break;
     }
@@ -71,12 +95,7 @@ export const patchProp = (
       }
       break;
     }
-    //TODO add other event
-    case "onClick": {
-      el.off("pointerdown", prevValue);
-      el.on("pointerdown", nextValue);
-      break;
-    }
+
     case "draw": {
       if (el instanceof Graphics) {
         nextValue(el);

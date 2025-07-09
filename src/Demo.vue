@@ -1,33 +1,42 @@
+<script setup lang="ts">
+import { ref } from "vue";
+
+const width = ref(500);
+const text = ref("12122322s211");
+setTimeout(() => {
+  width.value = 400;
+  text.value = "5512";
+}, 1000);
+const resize = ref(() => {
+  // console.log("resize");
+});
+setTimeout(() => {
+  resize.value = () => {
+    console.log("resize1");
+  };
+}, 500);
+</script>
 <template>
   <PixiApplication
-    :width="500"
+    :width
     :height="500"
     :layout="{
       backgroundColor: '#1099bb',
       justifyContent: 'center',
       alignItems: 'center',
-      flexDirection: 'column',
+      flexDirection: 'row',
     }"
-    @appResize="
-      (...args) => {
-        //console.log(args);
-      }
-    "
+    @resize="resize"
   >
-    <!-- <PixiContainer :layout="{ width: 200, height: 200 }"></PixiContainer> -->
-    <!-- <LayoutContainer
-      :layout="{ width: 200, height: 200, backgroundColor: '#000fff' }"
-    ></LayoutContainer> -->
     <PixiLayoutText
-      text="12123243"
+      :text
       :layout="{ width: 250, height: 250, backgroundColor: '#000fff' }"
       :style="{
         fill: '#fff000',
       }"
     />
-
     <PixiLayoutText
-      text="12123243"
+      :text
       :layout="{ width: 250, height: 250, backgroundColor: '#000fff' }"
       :style="{
         fill: '#fff000',

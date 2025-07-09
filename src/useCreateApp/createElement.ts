@@ -24,7 +24,15 @@ import {
   Texture,
   TilingSprite,
 } from "pixi.js";
-import type { RendererElement, RendererNode, RendererOptions } from "vue";
+import {
+  computed,
+  type Ref,
+  type RendererElement,
+  type RendererNode,
+  type RendererOptions,
+  ref,
+  watch,
+} from "vue";
 import { toCamelCase } from "#/utils/toCamelCase";
 
 const getClass = (type: string) => {
@@ -58,8 +66,12 @@ const getClass = (type: string) => {
   return classFunc;
 };
 export const createElement = (
-  payload: Parameters<RendererOptions<RendererNode | null, RendererElement>['createElement']>,
+  payload: Parameters<
+    RendererOptions<RendererNode | null, RendererElement>["createElement"]
+  >,
   application: Application,
+  rwdWidth: Ref<number>,
+  rwdHeight: Ref<number>,
 ): RendererNode => {
   const [type, _namespace, _isCustomizedBuiltIn, vnodeProps] = payload;
   const {
@@ -76,26 +88,41 @@ export const createElement = (
         transformOrigin: "left top",
       };
       const rwdContainer = new LayoutContainer();
-      rwdContainer.layout = {
-        ...layout,
-        height: "100%",
-        aspectRatio: propsWidth / propsHeight,
-      };
-
-      application.stage.addChild(rwdContainer as unknown as Container);
-
+      application.stage.removeChildren();
+      application.stage.addChild(rwdContainer);
+      rwdContainer.layout = { height: "100%" };
+      const aspectRatio = computed(() => rwdWidth.value / rwdHeight.value);
+      watch(
+        aspectRatio,
+        (aspectRatio) => {
+          rwdContainer.layout = { aspectRatio };
+        },
+        { immediate: true },
+      );
+      rwdContainer.layout = layout;
+      rwdWidth.value = propsWidth;
+      rwdHeight.value = propsHeight;
+      const resizeWH = ref({ width: 0, height: 0 });
       application.renderer.on("resize", (...args) => {
         const [width, height] = args;
-        const scaleX = width / propsWidth;
-        const scaleY = height / propsHeight;
-        const scale = scaleX > scaleY ? scaleY : scaleX;
-        application.stage.layout = {
-          width: width / scale,
-          height: height / scale,
-        };
-        application.stage.scale = scale;
-        vnodeProps?.["on:appResize"](...args);
+        resizeWH.value = { width, height };
+
+        vnodeProps?.onResize(...args);
       });
+      watch(
+        [rwdWidth, rwdHeight, resizeWH],
+        ([rwdWidth, rwdHeight, { width, height }]) => {
+          const scaleX = width / rwdWidth;
+          const scaleY = height / rwdHeight;
+          const scale = scaleX > scaleY ? scaleY : scaleX;
+          application.stage.layout = {
+            width: width / scale,
+            height: height / scale,
+          };
+          application.stage.scale = scale;
+        },
+        { immediate: true },
+      );
       application.resize();
       return application;
     }

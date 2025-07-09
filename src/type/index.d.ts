@@ -66,7 +66,7 @@ export interface CustomVueComponent {
     width: number;
     height: number;
     layout: Omit<LayoutOptions, "target">;
-    onAppResize: (
+    onResize: (
       ...payload: Parameters<Parameters<Renderer["on"]>[1]>
     ) => void;
   }>;
