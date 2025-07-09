@@ -6,8 +6,8 @@ npm i @khmer-chi/pixi-vue
 
 ## support
 
-1. pixi.js@8.9.2
-2. vue@3
+1. pixi.js
+2. vue
 3. @pixi/layout
 
 ## how to use
@@ -44,9 +44,13 @@ createPixiApp(App, document.getElementById("app")!);
 ```vue
 <template>
   <PixiApplication
+    :width="500"
+    :height="500"
     :layout="{
+      backgroundColor: '#1099bb',
       justifyContent: 'center',
       alignItems: 'center',
+      flexDirection: 'column',
     }"
     @appResize="
       (...args) => {
@@ -54,24 +58,13 @@ createPixiApp(App, document.getElementById("app")!);
       }
     "
   >
-    <PixiRwdContainer
-      :width="500"
-      :height="500"
-      :layout="{
-        backgroundColor: '#1099bb',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
+    <LayoutText
+      text="12123243"
+      :layout="{ width: 200, height: 100, backgroundColor: '#000fff' }"
+      :style="{
+        fill: '#fff000',
       }"
-    >
-      <LayoutText
-        text="12123243"
-        :layout="{ width: 200, height: 100, backgroundColor: '#000fff' }"
-        :style="{
-          fill: '#fff000',
-        }"
-      />
-    </PixiRwdContainer>
+    />
   </PixiApplication>
 </template>
 ```
