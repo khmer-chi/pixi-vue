@@ -1,7 +1,7 @@
 import { Application, Container } from "pixi.js";
-import type { RendererElement, RendererNode, RendererOptions } from "vue";
-
-export const remove = (payload: Parameters<RendererOptions<RendererNode | null, RendererElement>["remove"]>) => {
+import type { RendererNode, RendererOptions } from "vue";
+// RendererNode | null, RendererElement
+export const remove = (payload: Parameters<RendererOptions<RendererNode | null>["remove"]>) => {
   const [el] = payload
   if (!el) return;
   const parent = el.parent as RendererNode;

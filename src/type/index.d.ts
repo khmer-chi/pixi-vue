@@ -23,16 +23,25 @@ import type {
   Renderer,
   Sprite,
   Text,
+  Ticker,
   TilingSprite,
 } from "pixi.js";
 import type { DefineComponent, UnwrapRef } from "vue";
 
+type CommonProps = {
+  onResize?: (...payload: Parameters<Parameters<Renderer["on"]>[1]>) => void;
+  onTick?: (ticker: Ticker) => void;
+};
 type VueDefineProps<
   T extends abstract new (
     ...args: any
   ) => any,
   U = unknown,
-> = UnwrapRef<DefineComponent<Exclude<ConstructorParameters<T>[0], undefined> & U>>;
+> = UnwrapRef<
+  DefineComponent<
+    Exclude<ConstructorParameters<T>[0], undefined> & U & CommonProps
+  >
+>;
 
 type layoutWithoutBgColor<
   T extends abstract new (
@@ -41,17 +50,21 @@ type layoutWithoutBgColor<
   U = unknown,
 > = UnwrapRef<
   DefineComponent<
-    Omit<
-      Exclude<ConstructorParameters<T>[0], undefined>
-      , 'layout'>
-    & {
+    Omit<Exclude<ConstructorParameters<T>[0], undefined>, "layout"> & {
       layout?: Omit<LayoutOptions, "target" | "backgroundColor">;
-    }
-    & U
+    } & U &
+    CommonProps
   >
 >;
 
 export interface CustomVueComponent {
+  readonly PixiApplication: DefineComponent<
+    {
+      width: number;
+      height: number;
+      layout?: Omit<LayoutOptions, "target">;
+    } & CommonProps
+  >;
   readonly PixiLayoutContainer: VueDefineProps<typeof LayoutContainer>;
   readonly PixiLayoutSprite: VueDefineProps<typeof LayoutSprite>;
   readonly PixiLayoutText: VueDefineProps<typeof LayoutText>;
@@ -59,19 +72,14 @@ export interface CustomVueComponent {
   readonly PixiLayoutBitmapText: VueDefineProps<typeof LayoutBitmapText>;
   readonly PixiLayoutHtmlText: VueDefineProps<typeof LayoutHTMLText>;
   readonly PixiLayoutGraphics: VueDefineProps<typeof LayoutGraphics>;
-  readonly PixiLayoutAnimatedSprite: VueDefineProps<typeof LayoutAnimatedSprite>;
+  readonly PixiLayoutAnimatedSprite: VueDefineProps<
+    typeof LayoutAnimatedSprite
+  >;
   readonly PixiLayoutTilingSprite: VueDefineProps<typeof LayoutTilingSprite>;
-  readonly PixiLayoutNineSliceSprite: VueDefineProps<typeof LayoutNineSliceSprite>;
+  readonly PixiLayoutNineSliceSprite: VueDefineProps<
+    typeof LayoutNineSliceSprite
+  >;
   readonly PixiLayoutMesh: VueDefineProps<typeof LayoutMesh>;
-
-  readonly PixiApplication: DefineComponent<{
-    width: number;
-    height: number;
-    layout?: Omit<LayoutOptions, "target">;
-    onResize?: (
-      ...payload: Parameters<Parameters<Renderer["on"]>[1]>
-    ) => void;
-  }>;
 
   readonly PixiContainer: layoutWithoutBgColor<typeof Container>;
   readonly PixiGraphics: layoutWithoutBgColor<

@@ -1,7 +1,6 @@
 import type { Application } from "pixi.js";
 import {
   createRenderer,
-  type RendererElement,
   type RendererNode,
   ref,
 } from "vue";
@@ -14,10 +13,10 @@ import { remove } from "#/useCreateApp/remove";
 export const useCreateApp = (application: Application) => {
   const rwdWidth = ref(0);
   const rwdHeight = ref(0);
-  return createRenderer<RendererNode | null, RendererElement>({
+  return createRenderer<RendererNode | null>({
     createElement: (...args) =>
       createElement(args, application, rwdWidth, rwdHeight),
-    patchProp: (...args) => patchProp(args, rwdWidth, rwdHeight),
+    patchProp: (...args) => patchProp(args, application, rwdWidth, rwdHeight),
     insert: (...args) => insert(args),
     remove: (...args) => remove(args),
     createText: () => null,

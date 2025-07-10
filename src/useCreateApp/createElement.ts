@@ -28,7 +28,6 @@ import {
 import {
   computed,
   type Ref,
-  type RendererElement,
   type RendererNode,
   type RendererOptions,
   ref,
@@ -68,7 +67,7 @@ const getClass = (type: string) => {
 };
 export const createElement = (
   payload: Parameters<
-    RendererOptions<RendererNode | null, RendererElement>["createElement"]
+    RendererOptions["createElement"]
   >,
   application: Application,
   rwdWidth: Ref<number>,
@@ -91,6 +90,7 @@ export const createElement = (
       };
       const rwdContainer = new LayoutContainer();
       application.stage.addChild(rwdContainer);
+
       rwdContainer.layout = layout;
       rwdContainer.layout = { height: "100%" };
       const aspectRatio = computed(() => rwdWidth.value / rwdHeight.value);

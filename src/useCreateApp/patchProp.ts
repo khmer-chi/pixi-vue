@@ -7,16 +7,30 @@ import {
   Text,
   Texture,
 } from "pixi.js";
-import type { Ref, RendererElement, RendererNode, RendererOptions } from "vue";
+import type { Ref, RendererOptions } from "vue";
 
 export const patchProp = (
   payload: Parameters<
-    RendererOptions<RendererNode | null, RendererElement>["patchProp"]
+    RendererOptions["patchProp"]
   >,
+  application: Application,
   rwdWidth: Ref<number>,
   rwdHeight: Ref<number>,
 ) => {
+
   const [el, key, prevValue, nextValue] = payload;
+  if (key == "onResize") {
+    if (prevValue)
+      application.renderer.off("resize", prevValue);
+    application.renderer.on("resize", nextValue);
+    return;
+  }
+  if (key == "onTick") {
+    if (prevValue)
+      application.ticker.remove(prevValue)
+    application.ticker.add(nextValue)
+    return
+  }
   if (!(el instanceof Application)) {
     if (key.startsWith("on")) {
       const eventName = key.replace(/^on/, "").toLowerCase();
@@ -28,16 +42,10 @@ export const patchProp = (
     }
   }
 
-
   if (prevValue === undefined) return;
+  if (prevValue === null) return;
+
   switch (key) {
-    case "onResize": {
-      if (el instanceof Application) {
-        el.renderer.on("resize", nextValue);
-        el.renderer.off("resize", prevValue);
-      }
-      break;
-    }
     case "texture": {
       if (el instanceof Sprite) {
         el.texture = Texture.from(nextValue);
@@ -88,7 +96,11 @@ export const patchProp = (
           rwdHeight.value = nextValue
         break;
       }
-      el[key] = nextValue;
+      if (key == "rotation") {
+        el[key] = nextValue - prevValue;
+      } else {
+        el[key] = nextValue;
+      }
       break;
     }
     case "anchor": {
