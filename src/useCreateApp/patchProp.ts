@@ -87,6 +87,8 @@ export const patchProp = (
     case "x":
     case "y":
     case "rotation":
+    case "angle":
+
     case "scale":
     case "alpha": {
       if (el instanceof Application) {
@@ -96,7 +98,7 @@ export const patchProp = (
           rwdHeight.value = nextValue
         break;
       }
-      if (key == "rotation") {
+      if (key == "rotation" || key == "angle") {
         el[key] = nextValue - prevValue;
       } else {
         el[key] = nextValue;
