@@ -52,7 +52,7 @@ createPixiApp(App, document.getElementById("app")!);
       alignItems: 'center',
       flexDirection: 'column',
     }"
-    @appResize="
+    @resize="
       (...args) => {
         console.log(args);
       }

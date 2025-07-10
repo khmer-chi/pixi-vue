@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Container } from "pixi.js";
 import { ref } from "vue";
 
 const width = ref(500);
