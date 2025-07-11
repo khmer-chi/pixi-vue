@@ -1,4 +1,4 @@
-import { LayoutText } from "@pixi/layout/components";
+import { LayoutView } from "@pixi/layout/components";
 import {
   Application,
   type Container,
@@ -47,13 +47,16 @@ export const patchProp = (
 
   switch (key) {
     case "texture": {
+      if (el instanceof LayoutView) {
+        el.slot.texture = Texture.from(nextValue);
+      }
       if (el instanceof Sprite) {
         el.texture = Texture.from(nextValue);
       }
       break;
     }
     case "text": {
-      if (el instanceof LayoutText) {
+      if (el instanceof LayoutView) {
         el.slot.text = nextValue;
       }
       if (el instanceof Text) {
@@ -62,7 +65,7 @@ export const patchProp = (
       break;
     }
     case "style": {
-      if (el instanceof LayoutText) {
+      if (el instanceof LayoutView) {
         el.slot.style = nextValue;
       }
       if (el instanceof Text) {
