@@ -49,8 +49,7 @@ export const patchProp = (
     case "texture": {
       if (el instanceof LayoutView) {
         el.slot.texture = Texture.from(nextValue);
-      }
-      if (el instanceof Sprite) {
+      } else if (el instanceof Sprite) {
         el.texture = Texture.from(nextValue);
       }
       break;
@@ -58,8 +57,7 @@ export const patchProp = (
     case "text": {
       if (el instanceof LayoutView) {
         el.slot.text = nextValue;
-      }
-      if (el instanceof Text) {
+      } else if (el instanceof Text) {
         el.text = nextValue;
       }
       break;
@@ -67,8 +65,7 @@ export const patchProp = (
     case "style": {
       if (el instanceof LayoutView) {
         el.slot.style = nextValue;
-      }
-      if (el instanceof Text) {
+      } else if (el instanceof Text) {
         el[key] = nextValue;
       }
       break;

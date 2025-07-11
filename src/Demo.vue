@@ -3,14 +3,6 @@ import { ref } from "vue";
 const width = ref(500);
 const text = ref("12122322s211");
 
-const resize = ref(() => {
-  // console.log("resize");
-});
-setTimeout(() => {
-  resize.value = () => {
-    // console.log("resize1");
-  };
-}, 500);
 const angle = ref(90);
 setTimeout(() => {
   angle.value = 180;
