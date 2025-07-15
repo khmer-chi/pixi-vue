@@ -10,7 +10,6 @@ setTimeout(() => {
 </script>
 <template>
   <PixiApplication
-    ref="app"
     :width
     :height="500"
     :layout="{

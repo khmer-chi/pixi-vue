@@ -4,7 +4,7 @@
 
 npm i @khmer-chi/pixi-vue
 
-## support
+## base on
 
 1. pixi.js
 2. vue
